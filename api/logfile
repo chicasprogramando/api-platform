@@ -1,0 +1,24 @@
+2019-09-14 11:46:55.088 -03 [20502] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2019-09-14 11:46:55.088 -03 [20502] LOG:  listening on IPv6 address "::1", port 5432
+2019-09-14 11:46:55.090 -03 [20502] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2019-09-14 11:46:55.106 -03 [20503] LOG:  database system was shut down at 2019-09-14 11:46:36 -03
+2019-09-14 11:46:55.112 -03 [20502] LOG:  database system is ready to accept connections
+2019-09-14 11:47:55.117 -03 [20502] LOG:  could not open file "postmaster.pid": No such file or directory
+2019-09-14 11:47:55.124 -03 [20508] LOG:  could not open temporary statistics file "pg_stat_tmp/global.tmp": No such file or directory
+2019-09-14 11:47:55.125 -03 [20502] LOG:  performing immediate shutdown because data directory lock file is invalid
+2019-09-14 11:47:55.125 -03 [20502] LOG:  received immediate shutdown request
+2019-09-14 11:47:55.125 -03 [20502] LOG:  could not open file "postmaster.pid": No such file or directory
+2019-09-14 11:47:55.126 -03 [20507] WARNING:  terminating connection because of crash of another server process
+2019-09-14 11:47:55.126 -03 [20507] DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+2019-09-14 11:47:55.126 -03 [20507] HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+2019-09-14 11:47:55.126 -03 [20508] LOG:  could not open temporary statistics file "pg_stat/global.tmp": No such file or directory
+2019-09-14 11:47:55.129 -03 [20502] LOG:  database system is shut down
+2019-09-14 11:49:35.366 -03 [20630] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2019-09-14 11:49:35.367 -03 [20630] LOG:  listening on IPv6 address "::1", port 5432
+2019-09-14 11:49:35.368 -03 [20630] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2019-09-14 11:49:35.392 -03 [20631] LOG:  database system was shut down at 2019-09-14 11:49:08 -03
+2019-09-14 11:49:35.399 -03 [20630] LOG:  database system is ready to accept connections
+2019-09-14 12:29:10.500 -03 [21740] FATAL:  role "root" does not exist
+2019-09-14 12:29:38.706 -03 [21757] FATAL:  role "postgres" does not exist
+2019-09-14 12:47:49.321 -03 [22100] FATAL:  role "postgres" does not exist
+2019-09-14 12:55:18.677 -03 [22278] FATAL:  role "postgres" does not exist
