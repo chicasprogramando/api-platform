@@ -8,7 +8,7 @@ class UserService {
       throw error;
     }
   }
-
+q
   static async addUser(newUser) {
     try {
       return await database.User.create(newUser);
@@ -34,10 +34,10 @@ class UserService {
     }
   }
 
-  static async getUser(id) {
+  static async getUser(auth_sub) {
     try {
       const user = await database.User.findOne({
-        where: { id: Number(id) }
+        where: { auth_sub: String(auth_sub) }
       });
 
       return user;

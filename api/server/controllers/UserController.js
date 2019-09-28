@@ -62,18 +62,14 @@ class UserController {
   }
 
   static async getUser(req, res) {
-    const { id } = req.params;
-
-    if (!Number(id)) {
-      utils.setError(400, "Please input a valid numeric value");
-      return utils.send(res);
-    }
-
+    const { auth_sub } = req.body;
+    console.log(req.body)
+   
     try {
-      const user = await UserService.getUser(id);
+      const user = await UserService.getUser(auth_sub);
 
       if (!user) {
-        utils.setError(404, `Cannot find user with the id ${id}`);
+        utils.setError(404, `Cannot find user`);
       } else {
         utils.setSuccess(200, "Found User", user);
       }
