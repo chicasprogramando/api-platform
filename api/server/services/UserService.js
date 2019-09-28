@@ -8,7 +8,6 @@ class UserService {
       throw error;
     }
   }
-q
   static async addUser(newUser) {
     try {
       return await database.User.create(newUser);
