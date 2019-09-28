@@ -20,9 +20,9 @@ class UserController {
 
   static async addUser(req, res) {
     if (
+      !req.body.user_name ||
       !req.body.auth_sub ||
       !req.body.email ||
-      !req.body.is_mentor ||
       !req.body.accepted_terms ||
       !req.body.completed_profile
     ) {
