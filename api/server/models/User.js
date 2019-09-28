@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       user_name: DataTypes.STRING,
       auth_sub: DataTypes.STRING,
       email: DataTypes.STRING,
-      is_mentor: DataTypes.BOOLEAN,
       accepted_terms: DataTypes.BOOLEAN,
       completed_profile: DataTypes.BOOLEAN
     },
