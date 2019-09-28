@@ -19,17 +19,14 @@ class UserController {
   }
 
   static async addUser(req, res) {
-    if (
-      !req.body.user_name ||
-      !req.body.auth_sub ||
-      !req.body.email ||
-      !req.body.accepted_terms ||
-      !req.body.completed_profile
-    ) {
+    if (!req.body.user_name || !req.body.auth_sub || !req.body.email) {
       utils.setError(400, "Please provide complete details");
       return utils.send(res);
     }
     const newUser = req.body;
+    newUser.accepted_terms = false;
+    newUser.completed_profile = false;
+
     try {
       const createdUser = await UserService.addUser(newUser);
       utils.setSuccess(201, "User Added!", createdUser);
@@ -63,7 +60,7 @@ class UserController {
 
   static async getUser(req, res) {
     const { auth_sub } = req.params;
-   
+
     try {
       const user = await UserService.getUser(auth_sub);
 
