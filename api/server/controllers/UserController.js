@@ -32,7 +32,7 @@ class UserController {
     const newUser = req.body;
     try {
       const createdUser = await UserService.addUser(newUser);
-      utils.setSuccess(201, "Book Added!", createdUser);
+      utils.setSuccess(201, "User Added!", createdUser);
       return utils.send(res);
     } catch (error) {
       utils.setError(400, error.message);
@@ -50,7 +50,7 @@ class UserController {
     try {
       const updatedUser = await UserService.updateUser(id, alteredUser);
       if (!updatedUser) {
-        utils.setError(404, `Cannot find book with the id: ${id}`);
+        utils.setError(404, `Cannot find user with the id: ${id}`);
       } else {
         utils.setSuccess(200, "User updated", updatedUser);
       }
@@ -75,7 +75,7 @@ class UserController {
       if (!user) {
         utils.setError(404, `Cannot find user with the id ${id}`);
       } else {
-        utils.setSuccess(200, "Found Book", user);
+        utils.setSuccess(200, "Found User", user);
       }
       return utils.send(res);
     } catch (error) {
