@@ -10,7 +10,7 @@ module.exports = {
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
     // logic for reverting the changes
-    return queryInterface.removeColumn('User', "is_mentor");
+    return queryInterface.removeColumn('Users', "is_mentor");
   },
 
   down: (queryInterface, Sequelize) => {
@@ -21,6 +21,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-    return queryInterface.addColumn("User", "is_mentor", Sequelize.BOOLEAN);
+    return queryInterface.addColumn("Users", "is_mentor", Sequelize.BOOLEAN);
   }
 };
