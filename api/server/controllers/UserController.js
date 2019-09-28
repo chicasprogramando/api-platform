@@ -62,8 +62,7 @@ class UserController {
   }
 
   static async getUser(req, res) {
-    const { auth_sub } = req.body;
-    console.log(req.body)
+    const { auth_sub } = req.params;
    
     try {
       const user = await UserService.getUser(auth_sub);
@@ -75,7 +74,7 @@ class UserController {
       }
       return utils.send(res);
     } catch (error) {
-      utils.setError(404, error);
+      utils.setError(404, error.message);
       return utils.send(res);
     }
   }
