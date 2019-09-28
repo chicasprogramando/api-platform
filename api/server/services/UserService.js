@@ -19,11 +19,11 @@ class UserService {
   static async updateUser(id, updatedUser) {
     try {
       const userToUpdate = await database.User.findOne({
-        where: { id: Number(id) }
+        where: { id: id }
       });
 
       if (userToUpdate) {
-        await database.User.update(updatedUser, { where: { id: Number(id) } });
+        await database.User.update(updatedUser, { where: { id: id } });
 
         return updatedUser;
       }
@@ -48,12 +48,12 @@ class UserService {
   static async deleteUser(id) {
     try {
       const userToDelete = await database.User.findOne({
-        where: { id: Number(id) }
+        where: { id: id }
       });
 
       if (userToDelete) {
         const deletedUser = await database.User.destroy({
-          where: { id: Number(id) }
+          where: { id: id }
         });
         return deletedUser;
       }
