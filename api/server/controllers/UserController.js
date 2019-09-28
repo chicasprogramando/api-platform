@@ -40,10 +40,7 @@ class UserController {
   static async updatedUser(req, res) {
     const alteredUser = req.body;
     const { id } = req.params;
-    if (!Number(id)) {
-      utils.setError(400, "Please input a valid numeric value");
-      return utils.send(res);
-    }
+   
     try {
       const updatedUser = await UserService.updateUser(id, alteredUser);
       if (!updatedUser) {
