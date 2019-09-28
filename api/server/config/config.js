@@ -7,16 +7,14 @@ module.exports = {
     password: "root",
     database: "chprogdb",
     host: "127.0.0.1",
-    dialect: "postgres",
-    operatorsAliases: false
+    dialect: "postgres"
   },
   test: {
     username: "root",
     password: "root",
     database: "chprogdb_test",
     host: "127.0.0.1",
-    dialect: "postgres",
-    operatorsAliases: false
+    dialect: "postgres"
   },
   production: {
     use_env_variable: process.env.DATABASE_URL,
