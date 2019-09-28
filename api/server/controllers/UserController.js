@@ -78,12 +78,6 @@ class UserController {
 
   static async deleteUser(req, res) {
     const { id } = req.params;
-
-    if (!Number(id)) {
-      utils.setError(400, "Please provide a numeric value");
-      return utils.send(res);
-    }
-
     try {
       const userToDelete = await UserService.deleteUser(id);
 
