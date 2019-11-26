@@ -3,21 +3,6 @@ const Util = require("../utils/Utils");
 const utils = new Util();
 
 class UserController {
-  static async getAllUsers(req, res) {
-    try {
-      const allUsers = await UserService.getAllUsers();
-      if (allUsers.length > 0) {
-        utils.setSuccess(200, "Users retrieved", allUsers);
-      } else {
-        utils.setSuccess(200, "No users found");
-      }
-      return utils.send(res);
-    } catch (error) {
-      utils.setError(400, error);
-      return utils.send(res);
-    }
-  }
-
   static async addUser(req, res) {
     if (!req.body.user_name || !req.body.auth_sub || !req.body.email) {
       utils.setError(400, "Please provide complete details");
@@ -51,6 +36,21 @@ class UserController {
       return utils.send(res);
     } catch (error) {
       utils.setError(404, error);
+      return utils.send(res);
+    }
+  }
+
+  static async getAllUsers(req, res) {
+    try {
+      const allUsers = await UserService.getAllUsers();
+      if (allUsers.length > 0) {
+        utils.setSuccess(200, "Users retrieved", allUsers);
+      } else {
+        utils.setSuccess(200, "No users found");
+      }
+      return utils.send(res);
+    } catch (error) {
+      utils.setError(400, error);
       return utils.send(res);
     }
   }

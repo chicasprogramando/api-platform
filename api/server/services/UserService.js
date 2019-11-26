@@ -33,6 +33,7 @@ class UserService {
     }
   }
 
+  // TODO: User should return the profile too
   static async getUser(auth_sub) {
     try {
       const user = await database.User.findOne({

@@ -1,5 +1,5 @@
+"use strict";
 const uuid = require("uuid/v4");
-("use strict");
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
