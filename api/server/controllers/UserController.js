@@ -1,4 +1,5 @@
 const UserService = require("../services/UserService");
+const ProfileService = require("../services/ProfileService");
 const Util = require("../utils/Utils");
 const utils = new Util();
 
@@ -25,7 +26,7 @@ class UserController {
   static async updatedUser(req, res) {
     const alteredUser = req.body;
     const { id } = req.params;
-   
+
     try {
       const updatedUser = await UserService.updateUser(id, alteredUser);
       if (!updatedUser) {
@@ -60,10 +61,13 @@ class UserController {
 
     try {
       const user = await UserService.getUser(auth_sub);
-
       if (!user) {
         utils.setError(404, `Cannot find user`);
       } else {
+        if (user.completed_profile) {
+          const userProfile =  await ProfileService.getProfileByUserId(user.id)
+          user.profile = userProfile;
+        }
         utils.setSuccess(200, "Found User", user);
       }
       return utils.send(res);
