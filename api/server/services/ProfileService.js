@@ -8,6 +8,16 @@ class ProfileService {
       throw error;
     }
   }
+  static async getProfile(id) {
+    try {
+      const profile = await database.Profile.findOne({
+        where: { id: id }
+      });
+      return profile;
+    } catch (error) {
+      throw error;
+    }
+  }
   static async updateProfile(id, updatedProfile) {
     try {
       const profileToUpdate = await database.Profile.findOne({

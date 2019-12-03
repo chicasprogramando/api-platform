@@ -19,6 +19,23 @@ class ProfileController {
       return utils.send(res);
     }
   }
+
+  static async getProfile(req, res) {
+    const { id } = req.params;
+    try {
+      const profile = await ProfileService.getProfile(id);
+      if (!profile) {
+        utils.setError(404, `Cannot find profile`);
+      } else {
+        utils.setSuccess(200, "Found Profile", profile);
+      }
+      return utils.send(res);
+    } catch (error) {
+      utils.setError(404, error.message);
+      return utils.send(res);
+    }
+  }
+
   static async updateProfile(req, res) {
     const alteredProfile = req.body;
     const { id } = req.params;
@@ -37,21 +54,21 @@ class ProfileController {
       return utils.send(res);
     }
   }
-  static async deleteProfile(req, res){
-      const {id} = req.params
-      try {
-          const profileToDelete = await ProfileService.deleteProfile(id)
-          if(profileToDelete){
-              utils.setSuccess(200, "Profile deleted")
-          } else {
-              utils.setError(404, `Profile with the id ${id} cannot be found`)
-          }
-          return utils.send(res)
-      } catch (error) {
-          utils.setError(400, error)
-          return utils.send(res)
+  static async deleteProfile(req, res) {
+    const { id } = req.params;
+    try {
+      const profileToDelete = await ProfileService.deleteProfile(id);
+      if (profileToDelete) {
+        utils.setSuccess(200, "Profile deleted");
+      } else {
+        utils.setError(404, `Profile with the id ${id} cannot be found`);
       }
+      return utils.send(res);
+    } catch (error) {
+      utils.setError(400, error);
+      return utils.send(res);
+    }
   }
 }
 
-module.exports = ProfileController
+module.exports = ProfileController;
