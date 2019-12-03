@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   // TODO: We still need to add profile type (frontend, backend, qa)
 
   Profile.associate = models => {
-    Profile.belongsTo(models.User, { foreignKey: "userId", as: "user" });
+    Profile.belongsTo(models.User, { foreignKey: "UserId", as: "user" });
   };
 
   return Profile;
