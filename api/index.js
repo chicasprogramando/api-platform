@@ -2,7 +2,6 @@ const config = require("dotenv");
 const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./server/routes/UserRoutes");
-const profileRoutes = require("./server/routes/ProfileRoutes");
 
 
 const cors = require('cors')
@@ -19,7 +18,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const port = process.env.PORT || 8000;
 
 app.use("/api/user", userRoutes);
-app.use("/api/profile", profileRoutes);
 
 // when a random route is inputed
 app.get("*", (req, res) =>
