@@ -50,7 +50,7 @@ class ProfileController {
         utils.setSuccess(200, "Profile updated", updatedProfile);
       }
     } catch (error) {
-      utils.setError(404, error);
+      utils.setError(404, error.message);
       return utils.send(res);
     }
   }
@@ -65,7 +65,7 @@ class ProfileController {
       }
       return utils.send(res);
     } catch (error) {
-      utils.setError(400, error);
+      utils.setError(400, error.message);
       return utils.send(res);
     }
   }

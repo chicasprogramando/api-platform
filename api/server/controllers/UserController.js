@@ -23,7 +23,7 @@ class UserController {
         return utils.send(res);
       }
     } catch (error) {
-      utils.setError(404, error);
+      utils.setError(404, error.message);
       return utils.send(res);
     }
   }
@@ -41,7 +41,7 @@ class UserController {
       }
       return utils.send(res);
     } catch (error) {
-      utils.setError(404, error);
+      utils.setError(404, error.message);
       return utils.send(res);
     }
   }
@@ -56,7 +56,7 @@ class UserController {
       }
       return utils.send(res);
     } catch (error) {
-      utils.setError(400, error);
+      utils.setError(400, error.message);
       return utils.send(res);
     }
   }
@@ -93,7 +93,7 @@ class UserController {
       }
       return utils.send(res);
     } catch (error) {
-      utils.setError(400, error);
+      utils.setError(400, error.message);
       return utils.send(res);
     }
   }
