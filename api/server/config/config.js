@@ -3,17 +3,10 @@ env.config()
 
 module.exports = {
   development: {
-    username: "root",
-    password: "root",
-    database: "chprogdb",
-    host: "127.0.0.1",
-    dialect: "postgres"
-  },
-  test: {
-    username: "root",
-    password: "root",
-    database: "chprogdb_test",
-    host: "127.0.0.1",
+    username: process.env.DB_USER,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASS,
+    host: process.env.DB_HOST,
     dialect: "postgres"
   },
   production: {
