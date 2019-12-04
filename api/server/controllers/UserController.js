@@ -9,16 +9,21 @@ class UserController {
       utils.setError(400, "Please provide complete details");
       return utils.send(res);
     }
-    const newUser = req.body;
-    newUser.accepted_terms = false;
-    newUser.completed_profile = false;
-
     try {
-      const createdUser = await UserService.addUser(newUser);
-      utils.setSuccess(201, "User Added!", createdUser);
-      return utils.send(res);
+      const user = await UserService.getUser(req.body.auth_sub);
+      if (!user) {
+        const newUser = req.body;
+        newUser.accepted_terms = false;
+        newUser.completed_profile = false;
+        const createdUser = await UserService.addUser(newUser);
+        utils.setSuccess(201, "User Added!", createdUser);
+        return utils.send(res);
+      } else {
+        utils.setError(400, "User already exists");
+        return utils.send(res);
+      }
     } catch (error) {
-      utils.setError(400, error.message);
+      utils.setError(404, error);
       return utils.send(res);
     }
   }
@@ -58,14 +63,13 @@ class UserController {
 
   static async getUser(req, res) {
     const { auth_sub } = req.params;
-
     try {
       const user = await UserService.getUser(auth_sub);
       if (!user) {
         utils.setError(404, `Cannot find user`);
       } else {
         if (user.completed_profile) {
-          const userProfile =  await ProfileService.getProfileByUserId(user.id)
+          const userProfile = await ProfileService.getProfileByUserId(user.id);
           user.profile = userProfile;
         }
         utils.setSuccess(200, "Found User", user);
