@@ -14,14 +14,21 @@ module.exports = (sequelize, DataTypes) => {
       image_path: DataTypes.STRING,
       linkedin: DataTypes.STRING,
       github: DataTypes.STRING,
-      twitter: DataTypes.STRING
+      twitter: DataTypes.STRING,
+      UserId: {
+        type: DataTypes.UUID,
+        references: {
+          model: 'Users', 
+          key: 'id'
+       }
+  }
     },
     {}
   );
   // TODO: We still need to add profile type (frontend, backend, qa)
 
   Profile.associate = models => {
-    Profile.belongsTo(models.User, { foreignKey: "UserId", as: "user" });
+    Profile.hasOne(models.User, { foreignKey: 'ProfileId', as: "user"  })
   };
 
   return Profile;
