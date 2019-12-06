@@ -1,21 +1,23 @@
-const env = require("dotenv")
-env.config()
+const env = require("dotenv");
+env.config();
+
+const common = {
+  username: process.env.DB_USER,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASS,
+  host: process.env.DB_HOST,
+  dialect: "postgres"
+};
 
 module.exports = {
   development: {
-    username: process.env.DB_USER,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASS,
-    host: process.env.DB_HOST,
-    dialect: "postgres"
+    ...common
+  },
+  testing: {
+    ...common
   },
   production: {
-    "use_env_variable": "DATABASE_URL",
-    database: process.env.DB_NAME,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    host: process.env.DB_HOST,
-    url: process.env.DATABASE_URL,
-    dialect: "postgres"
+    use_env_variable: "DATABASE_URL",
+    ...common
   }
 };
