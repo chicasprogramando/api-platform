@@ -18,12 +18,9 @@ class ProfileService {
       throw error;
     }
   }
-  static async getProfileByUserId(UserId) {
+  static async getAllProfiles() {
     try {
-      const profile = await database.Profile.findOne({
-        where: { UserId: UserId }
-      });
-      return profile;
+      return await database.Profile.findAll();
     } catch (error) {
       throw error;
     }
