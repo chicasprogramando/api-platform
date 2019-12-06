@@ -19,7 +19,6 @@ class ProfileController {
       return utils.send(res);
     }
   }
-
   static async getProfile(req, res) {
     const { id } = req.params;
     try {
@@ -35,7 +34,20 @@ class ProfileController {
       return utils.send(res);
     }
   }
-
+  static async getAllProfiles(req, res) {
+    try {
+      const allProfiles = await ProfileService.getAllProfiles();
+      if (allProfiles.length > 0) {
+        utils.setSuccess(200, "Profiles retrieved", allProfiles);
+      } else {
+        utils.setSuccess(200, "No profiles found");
+      }
+      return utils.send(res);
+    } catch (error) {
+      utils.setError(400, error.message);
+      return utils.send(res);
+    }
+  }
   static async updateProfile(req, res) {
     const alteredProfile = req.body;
     const { id } = req.params;

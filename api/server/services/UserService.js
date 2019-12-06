@@ -36,9 +36,12 @@ class UserService {
   static async getUser(auth_sub) {
     try {
       const user = await database.User.findOne({
-        where: { auth_sub: String(auth_sub) }
+        where: { auth_sub: String(auth_sub) },
+        include: [{
+          model: database.Profile,
+          as: "profile"
+        }],
       });
-
       return user;
     } catch (error) {
       throw error;
