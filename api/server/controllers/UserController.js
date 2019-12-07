@@ -51,7 +51,7 @@ class UserController {
       if (allUsers.length > 0) {
         utils.setSuccess(200, "Users retrieved", allUsers);
       } else {
-        utils.setSuccess(200, "No users found");
+        utils.setSuccess(200, "No users found", []);
       }
       return utils.send(res);
     } catch (error) {
