@@ -21,10 +21,8 @@ class UserService {
       const userToUpdate = await database.User.findOne({
         where: { id: id }
       });
-
       if (userToUpdate) {
         await database.User.update(updatedUser, { where: { id: id } });
-
         return updatedUser;
       }
       return null;
@@ -37,10 +35,12 @@ class UserService {
     try {
       const user = await database.User.findOne({
         where: { auth_sub: String(auth_sub) },
-        include: [{
-          model: database.Profile,
-          as: "profile"
-        }],
+        include: [
+          {
+            model: database.Profile,
+            as: "profile"
+          }
+        ]
       });
       return user;
     } catch (error) {

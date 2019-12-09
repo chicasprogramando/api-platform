@@ -27,10 +27,9 @@ class UserController {
     }
   }
 
-  static async updatedUser(req, res) {
+  static async updateUser(req, res) {
     const alteredUser = req.body;
     const { id } = req.params;
-
     try {
       const updatedUser = await UserService.updateUser(id, alteredUser);
       if (!updatedUser) {
@@ -64,10 +63,11 @@ class UserController {
     const { auth_sub } = req.params;
     try {
       const user = await UserService.getUser(auth_sub);
-      if (!user) {
+      if (user) {
+        utils.setSuccess(200, "Found User", user);
+      } else {
         utils.setError(404, `Cannot find user`);
-      } 
-      utils.setSuccess(200, "Found User", user);
+      }
       return utils.send(res);
     } catch (error) {
       utils.setError(404, error.message);
