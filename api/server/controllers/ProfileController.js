@@ -40,7 +40,7 @@ class ProfileController {
       if (allProfiles.length > 0) {
         utils.setSuccess(200, "Profiles retrieved", allProfiles);
       } else {
-        utils.setSuccess(200, "No profiles found");
+        utils.setSuccess(200, "No profiles found", []);
       }
       return utils.send(res);
     } catch (error) {
