@@ -61,6 +61,7 @@ class ProfileController {
       } else {
         utils.setSuccess(200, "Profile updated", updatedProfile);
       }
+      return utils.send(res);
     } catch (error) {
       utils.setError(404, error.message);
       return utils.send(res);
