@@ -12,6 +12,10 @@ const baseRoute = "/api/user";
 chai.use(chaiHttp);
 
 describe("USER", () => {
+  
+  let userCreatedByPOST = {};
+  const fakeId = '5e016e8e-1804-4c35-abdd-9c0427989999'
+ 
   before(async () => {
     await cleanDB();
   });
@@ -19,7 +23,7 @@ describe("USER", () => {
   /*
    * Test the /GET default
    */
-  describe("/", () => {
+  describe("\n ----- GET / default msg -------------------------\n", () => {
     it("should show welcome message", done => {
       chai
         .request(server)
@@ -35,7 +39,7 @@ describe("USER", () => {
   /*
    * Test the /GET all users
    */
-  describe("GET /user", () => {
+  describe("\n ----- GET /user ------------------------------\n", () => {
     it("should return an empty array", done => {
       chai
         .request(server)
@@ -48,11 +52,11 @@ describe("USER", () => {
         });
     });
   });
-  
+
   /*
    * Test the /POST user
    */
-  describe("POST /user", () => {
+  describe("\n ----- POST /user ------------------------------\n", () => {
     it("should create a new user in the DB", done => {
       chai
         .request(server)
@@ -74,17 +78,8 @@ describe("USER", () => {
           expect(res.body.data.completed_profile).to.equal(false);
           expect(res.body.data.ProfileId).to.equal(null);
 
-          done();
-        });
-    });
-    it("should return 400 because user already exists in DB", done => {
-      chai
-        .request(server)
-        .post(baseRoute)
-        .send({ ...MOCKS.USER })
-        .end((err, res) => {
-          expect(res).to.have.status(400);
-          expect(res.body.message).to.equal("User already exists");
+          userCreatedByPOST = Object.assign({}, res.body.data);
+
           done();
         });
     });
@@ -93,7 +88,17 @@ describe("USER", () => {
   /*
    * Test the /GET specific user
    */
-  describe("GET /user/:auth_sub", () => {
+  describe("\n----- GET /user/:auth_sub ------------------------------\n", () => {
+    it("should return 404 because user doesn't exist", done => {
+      chai
+        .request(server)
+        .get(`${baseRoute}/google-oauth2|000000`)
+        .end(function(err, res) {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.equal("error");
+          done();
+        });
+    });
     it("should return a specific user", done => {
       chai
         .request(server)
@@ -109,6 +114,69 @@ describe("USER", () => {
           expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
           expect(res.body.data.auth_sub).to.equal(MOCKS.USER.auth_sub);
           expect(res.body.data.email).to.equal(MOCKS.USER.email);
+          done();
+        });
+    });
+  });
+  /*
+   * Test the /PUT user
+   * Will update the user created by POST above
+   */
+  describe("\n----- PUT /user/:id ------------------------------\n", () => {
+    it("should return 404 because user doesn't exist", done => {
+      chai
+        .request(server)
+        .put(`${baseRoute}/${fakeId}`)
+        .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
+        .end(function(err, res) {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.equal("error");
+          done();
+        });
+    });
+    it("should return the user updated", done => {
+      chai
+        .request(server)
+        .put(`${baseRoute}/${userCreatedByPOST.id}`)
+        .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
+        .end(function(err, res) {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.equal("success");
+
+          expect(res.body.data).to.be.a("object");
+
+          expect(res.body.data).to.have.property("user_name");
+          expect(res.body.data).to.have.property("email");
+
+          expect(res.body.data.user_name).to.equal("janedoe");
+          expect(res.body.data.email).to.equal("janedoe@gmail.com");
+
+          done();
+        });
+    });
+  });
+  /*
+   * Test the /DELETE user
+   * Will delete the user created by POST above
+   */
+  describe("\n----- DELETE /user/:id ------------------------------\n", () => {
+    it("should return 404 because user doesn't exist", done => {
+      chai
+        .request(server)
+        .delete(`${baseRoute}/${fakeId}`)
+        .end(function(err, res) {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.equal("error");
+          done();
+        });
+    });
+    it("should delete the user created by POST", done => {
+      chai
+        .request(server)
+        .delete(`${baseRoute}/${userCreatedByPOST.id}`)
+        .end(function(err, res) {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.equal("success");
           done();
         });
     });
