@@ -31,7 +31,7 @@ class ProfileService {
         where: { id: id },
       });
       if (profileToUpdate) {
-        await database.Profile.update(updatedProfile, { where: { id: id }, plain: true });
+        await database.Profile.update(updatedProfile, { where: { id: id } });
         return updatedProfile;
       }
       return null;
