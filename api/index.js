@@ -1,11 +1,10 @@
 const config = require("dotenv");
+const cors = require('cors')
 const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./server/routes/UserRoutes");
 const profileRoutes = require("./server/routes/ProfileRoutes");
 
-
-const cors = require('cors')
 
 config.config();
 

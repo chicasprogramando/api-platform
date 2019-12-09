@@ -28,12 +28,13 @@ class ProfileService {
   static async updateProfile(id, updatedProfile) {
     try {
       const profileToUpdate = await database.Profile.findOne({
-        where: { id: id }
+        where: { id: id },
       });
       if (profileToUpdate) {
         await database.Profile.update(updatedProfile, { where: { id: id } });
-        return profileToUpdate;
+        return updatedProfile;
       }
+      return null;
     } catch (error) {
       throw error;
     }
