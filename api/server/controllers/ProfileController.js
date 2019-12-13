@@ -1,4 +1,5 @@
 const ProfileService = require("../services/ProfileService");
+const UserService = require("../services/UserService");
 const Util = require("../utils/Utils");
 const utils = new Util();
 
@@ -8,6 +9,10 @@ class ProfileController {
       const newProfile = req.body;
       try {
         const createdProfile = await ProfileService.addProfile(newProfile);
+        // once profile is created, update user to set ProfilId to the ID of the created profile
+        await UserService.updateUser(newProfile.UserId, {
+          ProfileId: createdProfile.id
+        });
         utils.setSuccess(201, "Profile Created!", createdProfile);
         return utils.send(res);
       } catch (error) {
