@@ -65,6 +65,7 @@ describe("PROFILE", () => {
         .end((err, res) => {
           expect(res).to.have.status(201);
           expect(res.body.status).to.equal("success");
+          expect(res.body.data.ProfileId).to.equal(null);
           newUser = Object.assign({}, res.body.data);
           done();
         });
@@ -91,6 +92,20 @@ describe("PROFILE", () => {
           expect(res.body.data.image_path).to.equal(MOCKS.PROFILE.image_path);
 
           profileCreatedByPOST = Object.assign({}, res.body.data);
+
+          done();
+        });
+    });
+    it("should check that user.ProfileId is not null and is eq to the profile id created previously", done => {
+      chai
+        .request(server)
+        .get(`${userRoute}/${newUser.auth_sub}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.equal("success");
+
+          expect(res.body.data).to.be.a("object");
+          expect(res.body.data.ProfileId).to.equal(profileCreatedByPOST.id);
 
           done();
         });
