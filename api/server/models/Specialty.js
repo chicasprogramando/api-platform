@@ -20,5 +20,5 @@ module.exports = (sequelize, DataTypes) => {
     Specialty.belongsToMany(models.Profile, { as: 'profile', through: 'profile_specialty', foreignKey: 'SpecialtyId',  otherKey: 'ProfileId' })
   };
 
-  return Profile;
+  return Specialty;
 };
