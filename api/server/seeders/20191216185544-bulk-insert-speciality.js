@@ -31,12 +31,6 @@ module.exports = {
         },
         {
           id: uuidv4(),
-          description: "Full Stack",
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          id: uuidv4(),
           description: "QA",
           createdAt: new Date(),
           updatedAt: new Date()
