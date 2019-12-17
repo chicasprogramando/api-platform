@@ -13,6 +13,11 @@ class ProfileController {
         await UserService.updateUser(newProfile.UserId, {
           ProfileId: createdProfile.id
         });
+
+        if (req.body.specialties) {
+          const specialties = req.body.specialties;
+          specialties.map(async s => await createdProfile.addSpecialty(s.id));
+        }
         utils.setSuccess(201, "Profile Created!", createdProfile);
         return utils.send(res);
       } catch (error) {
