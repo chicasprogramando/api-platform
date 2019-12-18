@@ -15,14 +15,16 @@ module.exports = {
           references: {
             model: "Profiles",
             key: "id"
-          }
+          },
+          onDelete: 'cascade'
         },
         SpecialtyId: {
           type: Sequelize.UUID,
           references: {
             model: "Specialties",
             key: "id"
-          }
+          },
+          onDelete: 'cascade'
         },
         createdAt: {
           allowNull: false,
