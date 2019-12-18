@@ -13,7 +13,7 @@ const userRoute = "/api/user";
 chai.use(chaiHttp);
 
 describe("PROFILE", () => {
-  let profileCreatedByPOST = {};
+  let profileReturnedByPOST = {};
 
   before(async () => {
     await cleanDB();
@@ -57,6 +57,7 @@ describe("PROFILE", () => {
    */
   describe("\n ----- POST /profile ------------------------------\n", () => {
     let newUser = {};
+    // 1) Create a new user
     it("should create a new user in the DB", done => {
       chai
         .request(server)
@@ -70,12 +71,15 @@ describe("PROFILE", () => {
           done();
         });
     });
-
+    // 2) Assign a new profile to the user
     it("should create a new profile in the DB with new user id", done => {
+      const newProfile = Object.assign({}, MOCKS.PROFILE, {
+        specialties: MOCKS.SPECIALTIES
+      });
       chai
         .request(server)
         .post(profileRoute)
-        .send({ ...MOCKS.PROFILE, UserId: newUser.id })
+        .send({ ...newProfile, UserId: newUser.id })
         .end((err, res) => {
           expect(res).to.have.status(201);
           expect(res.body.status).to.equal("success");
@@ -91,11 +95,12 @@ describe("PROFILE", () => {
           expect(res.body.data.linkedin).to.equal(MOCKS.PROFILE.linkedin);
           expect(res.body.data.image_path).to.equal(MOCKS.PROFILE.image_path);
 
-          profileCreatedByPOST = Object.assign({}, res.body.data);
+          profileReturnedByPOST = Object.assign({}, res.body.data);
 
           done();
         });
     });
+
     it("should check that user.ProfileId is not null and is eq to the profile id created previously", done => {
       chai
         .request(server)
@@ -105,7 +110,7 @@ describe("PROFILE", () => {
           expect(res.body.status).to.equal("success");
 
           expect(res.body.data).to.be.a("object");
-          expect(res.body.data.ProfileId).to.equal(profileCreatedByPOST.id);
+          expect(res.body.data.ProfileId).to.equal(profileReturnedByPOST.id);
 
           done();
         });
@@ -126,14 +131,15 @@ describe("PROFILE", () => {
           done();
         });
     });
-    it("should return a specific profile", done => {
+    it("should return a specific profile including specialties", done => {
       chai
         .request(server)
-        .get(`${profileRoute}/${profileCreatedByPOST.id}`)
+        .get(`${profileRoute}/${profileReturnedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
 
+          // Validate profile properties and values
           expect(res.body.data).to.be.a("object");
           for (let i = 0; i < PROPS.PROFILE.length; i++) {
             expect(res.body.data).to.have.property(PROPS.PROFILE[i]);
@@ -142,6 +148,18 @@ describe("PROFILE", () => {
           expect(res.body.data.linkedin).to.equal(MOCKS.PROFILE.linkedin);
           expect(res.body.data.github).to.equal(MOCKS.PROFILE.github);
           expect(res.body.data.twitter).to.equal(MOCKS.PROFILE.twitter);
+
+          // Validate profile specialties
+          expect(res.body.data.specialty).to.be.a("array");
+          expect(res.body.data.specialty[0]).to.be.a("object");
+          expect(res.body.data.specialty[0]).to.have.property("id");
+          expect(res.body.data.specialty[0]).to.have.property("description");
+          res.body.data.specialty.map((s, i) => {
+            const mockedSpecialty = MOCKS.SPECIALTIES[i];
+            expect(s.id).to.equal(mockedSpecialty.id);
+            expect(s.description).to.equal(mockedSpecialty.description);
+          });
+
           done();
         });
     });
@@ -170,7 +188,7 @@ describe("PROFILE", () => {
     it("should return the profile updated", done => {
       chai
         .request(server)
-        .put(`${profileRoute}/${profileCreatedByPOST.id}`)
+        .put(`${profileRoute}/${profileReturnedByPOST.id}`)
         .send({
           linkedin: "https://www.linkedin.com/aaaa",
           twitter: "https://www.twitter.com/aaaa"
@@ -214,7 +232,7 @@ describe("PROFILE", () => {
     it("should delete the profile created by POST", done => {
       chai
         .request(server)
-        .delete(`${profileRoute}/${profileCreatedByPOST.id}`)
+        .delete(`${profileRoute}/${profileReturnedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");

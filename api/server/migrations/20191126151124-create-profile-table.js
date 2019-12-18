@@ -8,7 +8,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: uuid()
+        defaultValue: Sequelize.literal("uuid_generate_v4()")
       },
       image_path: {
         type: Sequelize.STRING

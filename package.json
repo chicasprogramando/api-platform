@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node ./api/index.js",
     "start": "node ./api/index.js",
+    "seed:testing": "NODE_ENV=testing sequelize db:seed:all",
     "pretest": "NODE_ENV=testing sequelize db:migrate",
     "test": "npm run pretest && NODE_ENV=testing mocha './api/server/test/*.test.js' --timeout 10000",
     "cover": "nyc -x \"./node_modules/\" npm run test"

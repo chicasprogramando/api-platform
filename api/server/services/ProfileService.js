@@ -11,7 +11,15 @@ class ProfileService {
   static async getProfile(id) {
     try {
       const profile = await database.Profile.findOne({
-        where: { id: id }
+        where: { id: id },
+        include: [
+          {
+            model: database.Specialty,
+            as: "specialty",
+            attributes: ['id', 'description'],
+            through: {attributes: []}
+          }
+        ]
       });
       return profile;
     } catch (error) {
