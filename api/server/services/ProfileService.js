@@ -16,7 +16,7 @@ class ProfileService {
           {
             model: database.Specialty,
             as: "specialty",
-            attributes: ['description'],
+            attributes: ['id', 'description'],
             through: {attributes: []}
           }
         ]
