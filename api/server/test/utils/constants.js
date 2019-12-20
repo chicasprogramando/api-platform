@@ -38,12 +38,19 @@ const PROPS = {
     "image_path",
     "createdAt",
     "updatedAt"
+  ],
+  SPECIALTY: [
+    "id",
+    "description",
+    "createdAt",
+    "updatedAt"
   ]
 };
 
 const FAKE_ID = {
   USER: "5e016e8e-1804-4c35-abdd-9c0427989999",
-  PROFILE: "da775875-5907-4f9e-a2bf-be9727c21bbf"
+  PROFILE: "da775875-5907-4f9e-a2bf-be9727c21bbf",
+  SPECIALTY: "d0cc0eea-6331-4c40-a75d-6a00e9999999"
 };
 
 module.exports = {
