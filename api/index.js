@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./server/routes/UserRoutes");
 const profileRoutes = require("./server/routes/ProfileRoutes");
+const specialtyRoutes = require("./server/routes/SpecialtyRoutes");
 
 
 config.config();
@@ -19,6 +20,7 @@ const port = process.env.PORT || 8000;
 
 app.use("/api/user", userRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/specialty", specialtyRoutes);
 
 // when a random route is inputed
 app.get("*", (req, res) =>
