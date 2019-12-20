@@ -18,8 +18,8 @@ const MOCKS = {
   SKILLS: [
     { id: "c7725624-6fb3-4a7f-9e6b-659d2a54592e", description: "Redis" },
     { id: "fb7456a4-e25c-4e21-96e7-39ebd22cc02d", description: "Redshift" },
-    { id: "eef36f53-acf8-416a-95e6-58b3eb9f653d", description: "Redux.js" },
-    { id: "afb62a5e-8527-4cb8-966e-78edbdc94aac", description: "React.js" }
+    { id: "afb62a5e-8527-4cb8-966e-78edbdc94aac", description: "React.js" },
+    { id: "eef36f53-acf8-416a-95e6-58b3eb9f653d", description: "Redux.js" }
   ]
 };
 
