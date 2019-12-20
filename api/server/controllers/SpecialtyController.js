@@ -48,7 +48,7 @@ class SpecialtyController {
       return utils.send(res);
     }
   }
-  static async udpateSpecialty(req, res) {
+  static async updateSpecialty(req, res) {
     const alteredSpecialty = req.body;
     const { id } = req.params;
     try {
