@@ -18,18 +18,28 @@ module.exports = (sequelize, DataTypes) => {
       UserId: {
         type: DataTypes.UUID,
         references: {
-          model: 'Users', 
-          key: 'id'
-       }
-  }
+          model: "Users",
+          key: "id"
+        }
+      }
     },
     {}
   );
-  // TODO: We still need to add profile type (frontend, backend, qa)
 
   Profile.associate = models => {
-    Profile.hasOne(models.User, { foreignKey: 'ProfileId', as: "user"  })
-    Profile.belongsToMany(models.Specialty, { as: 'specialty', through: 'Profile_Specialties', foreignKey: 'ProfileId',  otherKey: 'SpecialtyId' })
+    Profile.hasOne(models.User, { foreignKey: "ProfileId", as: "user" });
+    Profile.belongsToMany(models.Specialty, {
+      as: "specialty",
+      through: "Profile_Specialties",
+      foreignKey: "ProfileId",
+      otherKey: "SpecialtyId"
+    });
+    Profile.belongsToMany(models.Skill, {
+      as: "skill",
+      through: "Profile_Skills",
+      foreignKey: "ProfileId",
+      otherKey: "SkillId"
+    });
   };
 
   return Profile;

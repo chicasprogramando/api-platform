@@ -7,7 +7,7 @@ const models = require("../../models");
   * If other tables are being seeded with constant values, go ahead and add the models to the array,
     otherwise you should start with fresh empty tables for testing purposes.
 */
-const specialTables = ["sequelize", "Sequelize", "Specialty"];
+const specialTables = ["sequelize", "Sequelize", "Specialty", "Skill"];
 
 const cleanDB = async () => {
   return await Promise.all(

@@ -74,8 +74,11 @@ describe("PROFILE", () => {
     // 2) Assign a new profile to the user
     it("should create a new profile in the DB with new user id", done => {
       const newProfile = Object.assign({}, MOCKS.PROFILE, {
-        specialties: MOCKS.SPECIALTIES
+        specialties: MOCKS.SPECIALTIES,
+        skills: MOCKS.SKILLS
       });
+      console.log("*********************NEW PROFILE***************************", newProfile)
+      
       chai
         .request(server)
         .post(profileRoute)
@@ -158,6 +161,17 @@ describe("PROFILE", () => {
             const mockedSpecialty = MOCKS.SPECIALTIES[i];
             expect(s.id).to.equal(mockedSpecialty.id);
             expect(s.description).to.equal(mockedSpecialty.description);
+          });
+          
+          // Validate profile SKILLS
+          expect(res.body.data.skill).to.be.a("array");
+          expect(res.body.data.skill[0]).to.be.a("object");
+          expect(res.body.data.skill[0]).to.have.property("id");
+          expect(res.body.data.skill[0]).to.have.property("description");
+          res.body.data.skill.map((s, i) => {
+            const mockedSkill = MOCKS.SKILLS[i];
+            expect(s.id).to.equal(mockedSkill.id);
+            expect(s.description).to.equal(mockedSkill.description);
           });
 
           done();

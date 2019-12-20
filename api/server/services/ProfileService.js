@@ -18,6 +18,12 @@ class ProfileService {
             as: "specialty",
             attributes: ['id', 'description'],
             through: {attributes: []}
+          },
+          {
+            model: database.Skill,
+            as: "skill",
+            attributes: ['id', 'description'],
+            through: {attributes: []}
           }
         ]
       });

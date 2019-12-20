@@ -18,6 +18,11 @@ class ProfileController {
           const specialties = req.body.specialties;
           specialties.map(async s => await createdProfile.addSpecialty(s.id));
         }
+        if (req.body.skills) {
+          const skills = req.body.skills;
+          skills.map(async s => await createdProfile.addSkill(s.id));
+        }
+
         utils.setSuccess(201, "Profile Created!", createdProfile);
         return utils.send(res);
       } catch (error) {
