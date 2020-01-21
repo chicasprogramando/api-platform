@@ -27,7 +27,10 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Profile.associate = models => {
-    Profile.hasOne(models.User, { foreignKey: "ProfileId", as: "user" });
+    Profile.hasOne(models.User, {
+      foreignKey: "ProfileId",
+      as: "user"
+    });
     Profile.belongsToMany(models.Specialty, {
       as: "specialty",
       through: "Profile_Specialties",

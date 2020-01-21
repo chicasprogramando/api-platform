@@ -28,7 +28,12 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = function(models) {
-    User.hasOne(models.Profile, { foreignKey: "UserId", as: "profile" });
+    User.hasOne(models.Profile, {
+      foreignKey: "UserId",
+      as: "profile",
+      onDelete: "cascade",
+      hooks: true
+    });
   };
 
   return User;
