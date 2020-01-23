@@ -11,7 +11,8 @@ class ProfileController {
         const createdProfile = await ProfileService.addProfile(newProfile);
         // once profile is created, update user to set ProfilId to the ID of the created profile
         await UserService.updateUser(newProfile.UserId, {
-          ProfileId: createdProfile.id
+          ProfileId: createdProfile.id,
+          completed_profile: true
         });
 
         if (req.body.specialties) {
