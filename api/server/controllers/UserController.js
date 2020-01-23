@@ -13,7 +13,6 @@ class UserController {
       if (!user) {
         const newUser = req.body;
         newUser.accepted_terms = false;
-        newUser.completed_profile = false;
         const createdUser = await UserService.addUser(newUser);
         utils.setSuccess(201, "User Added!", createdUser);
         return utils.send(res);

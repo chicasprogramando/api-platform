@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       auth_sub: DataTypes.STRING,
       email: DataTypes.STRING,
       accepted_terms: DataTypes.BOOLEAN,
-      completed_profile: DataTypes.BOOLEAN,
       ProfileId: {
         type: DataTypes.UUID,
         references: {
@@ -28,7 +27,12 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = function(models) {
-    User.hasOne(models.Profile, { foreignKey: "UserId", as: "profile" });
+    User.hasOne(models.Profile, {
+      foreignKey: "UserId",
+      as: "profile",
+      onDelete: "cascade",
+      hooks: true
+    });
   };
 
   return User;

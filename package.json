@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node ./api/index.js",
+    "dev": "NODE_ENV=development nodemon ./api/index.js",
     "start": "node ./api/index.js",
     "seed": "sequelize db:seed:all",
     "seed:testing": "NODE_ENV=testing sequelize db:seed:all",
