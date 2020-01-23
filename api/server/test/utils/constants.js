@@ -30,7 +30,6 @@ const PROPS = {
     "auth_sub",
     "email",
     "accepted_terms",
-    "completed_profile",
     "ProfileId",
     "updatedAt",
     "createdAt"

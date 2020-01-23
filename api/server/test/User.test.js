@@ -74,7 +74,6 @@ describe("USER", () => {
           expect(res.body.data.auth_sub).to.equal(MOCKS.USER.auth_sub);
           expect(res.body.data.email).to.equal(MOCKS.USER.email);
           expect(res.body.data.accepted_terms).to.equal(false);
-          expect(res.body.data.completed_profile).to.equal(false);
           expect(res.body.data.ProfileId).to.equal(null);
 
           userCreatedByPOST = Object.assign({}, res.body.data);

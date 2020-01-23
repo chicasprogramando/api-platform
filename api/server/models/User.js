@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       auth_sub: DataTypes.STRING,
       email: DataTypes.STRING,
       accepted_terms: DataTypes.BOOLEAN,
-      completed_profile: DataTypes.BOOLEAN,
       ProfileId: {
         type: DataTypes.UUID,
         references: {
