@@ -15,8 +15,8 @@ class MailerController {
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-          user: "177492dc46bc2c", //mailtrap user
-          pass: "def90a4fcefb88"
+          user: process.env.MAILTRAP_USER,
+          pass: process.env.MAILTRAP_PASS
         }
       });
       // send mail with defined transport object
