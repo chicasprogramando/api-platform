@@ -1,5 +1,20 @@
 const database = require("../models");
 
+const associations = [
+  {
+    model: database.Specialty,
+    as: "specialty",
+    attributes: ["id", "description"],
+    through: { attributes: [] }
+  },
+  {
+    model: database.Skill,
+    as: "skill",
+    attributes: ["id", "description"],
+    through: { attributes: [] }
+  }
+];
+
 class ProfileService {
   static async addProfile(newProfile) {
     try {
@@ -12,20 +27,7 @@ class ProfileService {
     try {
       const profile = await database.Profile.findOne({
         where: { id: id },
-        include: [
-          {
-            model: database.Specialty,
-            as: "specialty",
-            attributes: ['id', 'description'],
-            through: {attributes: []}
-          },
-          {
-            model: database.Skill,
-            as: "skill",
-            attributes: ['id', 'description'],
-            through: {attributes: []}
-          }
-        ]
+        include: associations
       });
       return profile;
     } catch (error) {
@@ -34,7 +36,7 @@ class ProfileService {
   }
   static async getAllProfiles() {
     try {
-      return await database.Profile.findAll();
+      return await database.Profile.findAll({ include: associations });
     } catch (error) {
       throw error;
     }
@@ -42,7 +44,7 @@ class ProfileService {
   static async updateProfile(id, updatedProfile) {
     try {
       const profileToUpdate = await database.Profile.findOne({
-        where: { id: id },
+        where: { id: id }
       });
       if (profileToUpdate) {
         await database.Profile.update(updatedProfile, { where: { id: id } });
