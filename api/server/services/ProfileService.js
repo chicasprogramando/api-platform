@@ -47,8 +47,8 @@ class ProfileService {
         where: { id: id }
       });
       if (profileToUpdate) {
-        await database.Profile.update(updatedProfile, { where: { id: id } });
-        return updatedProfile;
+        await database.Profile.update(updatedProfile, { where: { id: id }, include: associations });
+        return newProfile
       }
       return null;
     } catch (error) {
