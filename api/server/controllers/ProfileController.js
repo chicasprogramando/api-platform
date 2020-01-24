@@ -63,8 +63,6 @@ class ProfileController {
       return utils.send(res);
     }
   }
-  // Hay que ver qué pasa si el user no manda especialidades y ya tenia cargadas
-  // las borramos ?
   static async updateProfile(req, res) {
     const { id } = req.params;
     try {
