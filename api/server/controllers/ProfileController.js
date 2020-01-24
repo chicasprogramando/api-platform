@@ -69,8 +69,6 @@ class ProfileController {
       // 1) Get prev. profile
       const profile = await ProfileService.getProfile(id);
 
-      let result;
-
       if (!profile) {
         utils.setError(404, `Cannot find profile with the id: ${id}`);
       } else {
@@ -109,8 +107,8 @@ class ProfileController {
         // Skills and specialties don't finish inserting and result has skills and specialties empty
         // With the timeout we ""fix"" it
         await new Promise(r => setTimeout(r, 1000));
-        result = await ProfileService.getProfile(id);
-        utils.setSuccess(200, "Profile updated", result);
+        const updatedProfile = await ProfileService.getProfile(id);
+        utils.setSuccess(200, "Profile updated", updatedProfile);
       }
 
       return utils.send(res);
