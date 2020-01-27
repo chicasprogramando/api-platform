@@ -9,7 +9,7 @@ class UserController {
       return utils.send(res);
     }
     try {
-      const user = await UserService.getUser(req.body.auth_sub);
+      const user = await UserService.getUserByEmail(req.body.email);
       if (!user) {
         const newUser = req.body;
         newUser.accepted_terms = false;
