@@ -116,10 +116,10 @@ describe("USER", () => {
         });
     });
   });
-  // /*
-  //  * Test the /PUT user
-  //  * Will update the user created by POST above
-  //  */
+  /*
+    * Test the /PUT user
+    * Will update the user created by POST above
+  */
   describe("\n----- PUT /user/:id ------------------------------\n", () => {
     it("should return 404 because user doesn't exist", done => {
       chai
@@ -153,10 +153,10 @@ describe("USER", () => {
         });
     });
   });
-  // /*
-  //  * Test the /DELETE user
-  //  * Will delete the user created by POST above
-  //  */
+  /*
+   * Test the /DELETE user
+   * Will delete the user created by POST above
+   */
   describe("\n----- DELETE /user/:id ------------------------------\n", () => {
     it("should return 404 because user doesn't exist", done => {
       chai
