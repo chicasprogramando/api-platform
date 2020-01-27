@@ -59,9 +59,9 @@ class UserController {
   }
 
   static async getUser(req, res) {
-    const { auth_sub } = req.params;
+    const { id } = req.params;
     try {
-      const user = await UserService.getUser(auth_sub);
+      const user = await UserService.getUser(id);
       if (user) {
         utils.setSuccess(200, "Found User", user);
       } else {
