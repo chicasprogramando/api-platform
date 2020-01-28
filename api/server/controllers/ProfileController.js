@@ -11,8 +11,7 @@ class ProfileController {
         const createdProfile = await ProfileService.addProfile(newProfile);
         // once profile is created, update user to set ProfilId to the ID of the created profile
         await UserService.updateUser(newProfile.UserId, {
-          ProfileId: createdProfile.id,
-          completed_profile: true
+          ProfileId: createdProfile.id
         });
 
         if (req.body.specialties) {
@@ -65,24 +64,60 @@ class ProfileController {
     }
   }
   static async updateProfile(req, res) {
-    const alteredProfile = req.body;
     const { id } = req.params;
     try {
-      const updatedProfile = await ProfileService.updateProfile(
-        id,
-        alteredProfile
-      );
-      if (!updatedProfile) {
+      // 1) Get prev. profile
+      const profile = await ProfileService.getProfile(id);
+
+      if (!profile) {
         utils.setError(404, `Cannot find profile with the id: ${id}`);
       } else {
+        // LELE TODO: Move all this to a separated function, it's almost the same create logic
+        if (req.body.specialties || req.body.skills) {
+          // 2) Delete profile
+          await ProfileService.deleteProfile(id);
+          // 3) Format the new profile
+          const newProfile = { id, UserId: profile.UserId, ...req.body };
+          // 4) Create the new profile
+          const createdProfile = await ProfileService.addProfile(newProfile);
+          // once profile is created, update user to set ProfilId to the ID of the created profile
+          await UserService.updateUser(newProfile.UserId, {
+            ProfileId: createdProfile.id
+          });
+
+          // Map specialties
+           if (req.body.specialties) {
+            const specialties = req.body.specialties;
+            await specialties.map(
+              async s => await createdProfile.addSpecialty(s.id)
+            );
+          }
+          // Map Skills
+          if (req.body.skills) {
+            const skills = req.body.skills;
+            await skills.map(async s => await createdProfile.addSkill(s.id));
+          }
+        
+        } else {
+          // Updates only profile data no associations
+          await ProfileService.updateProfile(id, { ...req.body });
+        }
+
+        // Change this time out for a sequelie transaction or something like that
+        // Skills and specialties don't finish inserting and result has skills and specialties empty
+        // With the timeout we ""fix"" it
+        await new Promise(r => setTimeout(r, 1000));
+        const updatedProfile = await ProfileService.getProfile(id);
         utils.setSuccess(200, "Profile updated", updatedProfile);
       }
+
       return utils.send(res);
     } catch (error) {
       utils.setError(404, error.message);
       return utils.send(res);
     }
   }
+
   static async deleteProfile(req, res) {
     const { id } = req.params;
     try {
