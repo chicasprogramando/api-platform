@@ -1,4 +1,4 @@
-const checkJwt = require("./checkJwt")
+const checkJwt = require("./secure")
 const checkScopes = require("./checkScopes")
 const error = require("./error")
 
