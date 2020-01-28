@@ -7,13 +7,17 @@ const server = require("../../index");
 const { cleanDB } = require("./utils/helpers");
 const { MOCKS, PROPS, FAKE_ID } = require("./utils/constants");
 
-const profileRoute = "/api/profile";
 const userRoute = "/api/user";
+const skillRoute = "/api/skill";
+const profileRoute = "/api/profile";
+const specialtiesRoute = "/api/specialty";
 
 chai.use(chaiHttp);
 
 describe("PROFILE", () => {
   let profileReturnedByPOST = {};
+  let skillsFromGet, specialtiesFromGet;
+  let newUser = {};
 
   before(async () => {
     await cleanDB();
@@ -56,7 +60,7 @@ describe("PROFILE", () => {
    * Test the /POST profile
    */
   describe("\n ----- POST /profile ------------------------------\n", () => {
-    let newUser = {};
+
     // 1) Create a new user
     it("should create a new user in the DB", done => {
       chai
@@ -71,14 +75,39 @@ describe("PROFILE", () => {
           done();
         });
     });
+    // Get the skills and specialties from the DB
+    it("should get skills and specialties from the DB", done => {
+      chai
+        .request(server)
+        .get(skillRoute)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.equal("success");
+          skillsFromGet = res.body.data.slice(0, 4);
+        });
+      chai
+        .request(server)
+        .get(specialtiesRoute)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.equal("success");
+          specialtiesFromGet = res.body.data.slice(0, 2);
+          done();
+        });
+       
+    });
+
     // 2) Assign a new profile to the user
     it("should create a new profile in the DB with new user id", done => {
       const newProfile = Object.assign({}, MOCKS.PROFILE, {
-        specialties: MOCKS.SPECIALTIES,
-        skills: MOCKS.SKILLS
+        specialties: [...specialtiesFromGet],
+        skills: [...skillsFromGet]
       });
-      console.log("*********************NEW PROFILE***************************", newProfile)
-      
+      console.log(
+        "*********************NEW PROFILE***************************",
+        newProfile
+      );
+
       chai
         .request(server)
         .post(profileRoute)
@@ -107,7 +136,7 @@ describe("PROFILE", () => {
     it("should check that user.ProfileId is not null and is eq to the profile id created previously", done => {
       chai
         .request(server)
-        .get(`${userRoute}/${newUser.auth_sub}`)
+        .get(`${userRoute}/${newUser.id}`)
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
@@ -157,21 +186,21 @@ describe("PROFILE", () => {
           expect(res.body.data.specialty[0]).to.be.a("object");
           expect(res.body.data.specialty[0]).to.have.property("id");
           expect(res.body.data.specialty[0]).to.have.property("description");
-          res.body.data.specialty.map((s, i) => {
-            const mockedSpecialty = MOCKS.SPECIALTIES[i];
-            expect(s.id).to.equal(mockedSpecialty.id);
-            expect(s.description).to.equal(mockedSpecialty.description);
+          specialtiesFromGet.map((s, i) => {
+            const specialty = res.body.data.specialty[i]
+            expect(s.id).to.equal(specialty.id);
+            expect(s.description).to.equal(specialty.description);
           });
-          
+
           // Validate profile SKILLS
           expect(res.body.data.skill).to.be.a("array");
           expect(res.body.data.skill[0]).to.be.a("object");
           expect(res.body.data.skill[0]).to.have.property("id");
           expect(res.body.data.skill[0]).to.have.property("description");
-          res.body.data.skill.map((s, i) => {
-            const mockedSkill = MOCKS.SKILLS[i];
-            expect(s.id).to.equal(mockedSkill.id);
-            expect(s.description).to.equal(mockedSkill.description);
+          skillsFromGet.map((s, i) => {
+            const skill = res.body.data.skill[i]
+            expect(s.id).to.equal(skill.id);
+            expect(s.description).to.equal(skill.description);
           });
 
           done();

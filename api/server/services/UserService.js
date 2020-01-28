@@ -31,10 +31,26 @@ class UserService {
     }
   }
 
-  static async getUser(auth_sub) {
+  static async getUser(id) {
     try {
       const user = await database.User.findOne({
-        where: { auth_sub: String(auth_sub) },
+        where: { id: id },
+        include: [
+          {
+            model: database.Profile,
+            as: "profile"
+          }
+        ]
+      });
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getUserByEmail(email) {
+    try {
+      const user = await database.User.findOne({
+        where: { email: email },
         include: [
           {
             model: database.Profile,
