@@ -45,7 +45,7 @@ describe("SPECIALTY", () => {
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
-          expect(res.body.data).to.have.lengthOf(15);
+          expect(res.body.data).not.to.be.empty;
           done();
         });
     });
@@ -96,7 +96,7 @@ describe("SPECIALTY", () => {
     it("should return a specific specialty", done => {
       chai
         .request(server)
-        .get(`${specialtyRoute}/${MOCKS.SPECIALTIES[0].id}`)
+        .get(`${specialtyRoute}/${specialtyCreatedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
@@ -106,9 +106,9 @@ describe("SPECIALTY", () => {
             expect(res.body.data).to.have.property(PROPS.SPECIALTY[i]);
           }
 
-          expect(res.body.data.id).to.equal(MOCKS.SPECIALTIES[0].id);
+          expect(res.body.data.id).to.equal(specialtyCreatedByPOST.id);
           expect(res.body.data.description).to.equal(
-            MOCKS.SPECIALTIES[0].description
+            specialtyCreatedByPOST.description
           );
 
           done();
