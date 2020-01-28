@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon ./api/index.js",
     "start": "node ./api/index.js",
-    "seed": "sequelize db:seed:all",
-    "seed:testing": "NODE_ENV=testing sequelize db:seed:all",
     "migrate": "sequelize db:migrate",
     "migrate:testing": "NODE_ENV=testing sequelize db:migrate",
     "pretest": "NODE_ENV=testing sequelize db:migrate",
