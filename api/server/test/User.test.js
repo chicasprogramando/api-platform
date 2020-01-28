@@ -86,11 +86,11 @@ describe("USER", () => {
   /*
    * Test the /GET specific user
    */
-  describe("\n----- GET /user/:auth_sub ------------------------------\n", () => {
+  describe("\n----- GET /user/:id ------------------------------\n", () => {
     it("should return 404 because user doesn't exist", done => {
       chai
         .request(server)
-        .get(`${userRoute}/google-oauth2|000000`)
+        .get(`${userRoute}/${FAKE_ID.USER}`)
         .end(function(err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
@@ -100,7 +100,7 @@ describe("USER", () => {
     it("should return a specific user", done => {
       chai
         .request(server)
-        .get(`${userRoute}/${MOCKS.USER.auth_sub}`)
+        .get(`${userRoute}/${userCreatedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
@@ -117,9 +117,9 @@ describe("USER", () => {
     });
   });
   /*
-   * Test the /PUT user
-   * Will update the user created by POST above
-   */
+    * Test the /PUT user
+    * Will update the user created by POST above
+  */
   describe("\n----- PUT /user/:id ------------------------------\n", () => {
     it("should return 404 because user doesn't exist", done => {
       chai

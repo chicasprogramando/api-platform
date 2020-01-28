@@ -136,7 +136,7 @@ describe("PROFILE", () => {
     it("should check that user.ProfileId is not null and is eq to the profile id created previously", done => {
       chai
         .request(server)
-        .get(`${userRoute}/${newUser.auth_sub}`)
+        .get(`${userRoute}/${newUser.id}`)
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
