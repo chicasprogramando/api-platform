@@ -5,7 +5,7 @@ const { expect } = chai;
 
 const server = require("../../index");
 const { cleanDB } = require("./utils/helpers");
-const { MOCKS, PROPS, FAKE_ID } = require("./utils/constants");
+const { PROPS, FAKE_ID } = require("./utils/constants");
 
 const skillRoute = "/api/skill";
 
@@ -45,7 +45,8 @@ describe("SKILL", () => {
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
-          expect(res.body.data).to.have.lengthOf(171);
+          expect(res.body.data).not.to.be.empty;
+
           done();
         });
     });
@@ -96,7 +97,7 @@ describe("SKILL", () => {
     it("should return a specific skill", done => {
       chai
         .request(server)
-        .get(`${skillRoute}/${MOCKS.SKILLS[0].id}`)
+        .get(`${skillRoute}/${skillCreatedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
@@ -106,9 +107,9 @@ describe("SKILL", () => {
             expect(res.body.data).to.have.property(PROPS.SKILL[i]);
           }
           
-          expect(res.body.data.id).to.equal(MOCKS.SKILLS[0].id);
+          expect(res.body.data.id).to.equal(skillCreatedByPOST.id);
           expect(res.body.data.description).to.equal(
-            MOCKS.SKILLS[0].description
+            skillCreatedByPOST.description
           );
 
           done();
