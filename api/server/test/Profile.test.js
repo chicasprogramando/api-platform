@@ -188,6 +188,7 @@ describe("PROFILE", () => {
           expect(res.body.data.specialty[0]).to.have.property("description");
           specialtiesFromGet.map((s, i) => {
             const specialty = res.body.data.specialty[i]
+            expect(s.id).to.equal(specialty.id);
             expect(s.description).to.equal(specialty.description);
           });
 
@@ -198,6 +199,7 @@ describe("PROFILE", () => {
           expect(res.body.data.skill[0]).to.have.property("description");
           skillsFromGet.map((s, i) => {
             const skill = res.body.data.skill[i]
+            expect(s.id).to.equal(skill.id);
             expect(s.description).to.equal(skill.description);
           });
 
