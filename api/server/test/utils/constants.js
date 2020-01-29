@@ -5,6 +5,7 @@ const MOCKS = {
     email: "jennydoe@gmail.com"
   },
   PROFILE: {
+    name: "Lele",
     image_path: "https://avatars3.githubusercontent.com/u/3179348?s=460&v=4",
     linkedin: "https://www.linkedin.com/in/eleonora-lester-7a432022",
     github: "elstr",
@@ -37,6 +38,7 @@ const PROPS = {
   PROFILE: [
     "id",
     "UserId",
+    "name",
     "github",
     "twitter",
     "linkedin",
