@@ -83,6 +83,47 @@ describe("USER", () => {
     });
   });
 
+
+   /*
+   * Test the /POST user/signin
+   */
+  describe("\n ----- POST /user/signin ------------------------------\n", () => {
+    it("should return user not found 404", done => {
+      chai
+        .request(server)
+        .post(`${userRoute}/signin`)
+        .send({email: "this-email@does-not.exist" })
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.equal("error");
+          done();
+        });
+    });
+    it("should return user info and profile for given email", done => {
+      chai
+        .request(server)
+        .post(`${userRoute}/signin`)
+        .send({email: MOCKS.USER.email })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.equal("success");
+
+          expect(res.body.data).to.be.a("object");
+          for (let i = 0; i < PROPS.USER.length; i++) {
+            expect(res.body.data).to.have.property(PROPS.USER[i]);
+          }
+
+          expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
+          expect(res.body.data.auth_sub).to.equal(MOCKS.USER.auth_sub);
+          expect(res.body.data.email).to.equal(MOCKS.USER.email);
+          expect(res.body.data.accepted_terms).to.equal(false);
+          expect(res.body.data.ProfileId).to.equal(null);
+
+          done();
+        });
+    });
+  });
+
   /*
    * Test the /GET specific user
    */
