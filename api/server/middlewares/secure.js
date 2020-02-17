@@ -36,13 +36,23 @@ function verifyToken(token) {
 }
 
 function checkJwt(req, res, next) {
-  const user = req.body;
-  const decoded = decodeHeader(req);
-  if (decoded.sub !== user.auth_sub) {
-    utils.setError(400, "Not authorized");
+  try {
+    const user = req.body;
+    const decoded = decodeHeader(req, res);
+
+    if (
+      decoded.iss !== process.env.JWT_ISSUER ||
+      decoded.sub !== user.auth_sub
+    ) {
+      utils.setError(403, "Not authorized");
+      return utils.send(res);
+    }
+
+    next();
+  } catch (error) {
+    utils.setError(403, error.message);
     return utils.send(res);
   }
-  next();
 }
 
 module.exports = {
