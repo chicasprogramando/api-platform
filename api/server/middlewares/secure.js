@@ -16,22 +16,16 @@ function decodeHeader(req) {
     req.user = decoded;
 
     return decoded;
-  } catch (err) {
-    utils.setError(400, error.message);
-    return utils.send(res);
+  } catch (error) {
+    throw error;
   }
 }
 
 function getToken(authorization) {
-  if (!authorization) {
-    utils.setError(500, "No auth token sent");
-    return utils.send(res);
-  }
+  if (!authorization) throw new Error("No auth token sent");
 
-  if (authorization.indexOf("Bearer ") === -1) {
-    utils.setError(500, "Invalid token format");
-    return utils.send(res);
-  }
+  if (authorization.indexOf("Bearer ") === -1)
+    throw new Error("Invalid token format");
 
   const token = authorization.replace("Bearer", "");
   return token.trim();
