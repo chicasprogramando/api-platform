@@ -5,7 +5,7 @@ const { expect } = chai;
 
 const server = require("../../index");
 const { cleanDB } = require("./utils/helpers");
-const { MOCKS, PROPS, FAKE_ID } = require("./utils/constants");
+const { MOCKS, PROPS, FAKE_ID, TEST_TOKEN } = require("./utils/constants");
 
 const userRoute = "/api/user";
 
@@ -14,6 +14,7 @@ chai.use(chaiHttp);
 describe("USER", () => {
   
   let userCreatedByPOST = {};
+  const token = `Bearer ${TEST_TOKEN}`
  
   before(async () => {
     await cleanDB();
@@ -92,6 +93,7 @@ describe("USER", () => {
       chai
         .request(server)
         .post(`${userRoute}/signin`)
+        .set("Authorization", token)
         .send({email: "this-email@does-not.exist" })
         .end((err, res) => {
           expect(res).to.have.status(404);
@@ -103,6 +105,7 @@ describe("USER", () => {
       chai
         .request(server)
         .post(`${userRoute}/signin`)
+        .set("Authorization", token)
         .send({email: MOCKS.USER.email })
         .end((err, res) => {
           expect(res).to.have.status(200);
@@ -166,6 +169,7 @@ describe("USER", () => {
       chai
         .request(server)
         .put(`${userRoute}/${FAKE_ID.USER}`)
+        .set("Authorization", token)
         .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
         .end(function(err, res) {
           expect(res).to.have.status(404);
@@ -177,6 +181,7 @@ describe("USER", () => {
       chai
         .request(server)
         .put(`${userRoute}/${userCreatedByPOST.id}`)
+        .set("Authorization", token)
         .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
         .end(function(err, res) {
           expect(res).to.have.status(200);
@@ -203,6 +208,7 @@ describe("USER", () => {
       chai
         .request(server)
         .delete(`${userRoute}/${FAKE_ID.USER}`)
+        .set("Authorization", token)
         .end(function(err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
@@ -213,6 +219,7 @@ describe("USER", () => {
       chai
         .request(server)
         .delete(`${userRoute}/${userCreatedByPOST.id}`)
+        .set("Authorization", token)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
