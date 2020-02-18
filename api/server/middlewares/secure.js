@@ -4,7 +4,7 @@ const utils = new Util();
 const jwt = require("jsonwebtoken");
 
 function sign(data) {
-  const token = jwt.sign(data, secret);
+  const token = jwt.sign(data, process.env.JWT_SECRET);
   return token;
 }
 
