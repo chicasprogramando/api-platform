@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         defaultValue: uuid()
       },
+      name: DataTypes.STRING,
       image_path: DataTypes.STRING,
       linkedin: DataTypes.STRING,
       github: DataTypes.STRING,

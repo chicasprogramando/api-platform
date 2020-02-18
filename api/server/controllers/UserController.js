@@ -90,6 +90,24 @@ class UserController {
       return utils.send(res);
     }
   }
+
+  static async signIn(req, res) {
+    const { email } = req.body;
+    try {
+      const user = await UserService.getUserByEmail(email);
+      if (user) {
+        utils.setSuccess(200, "Found user", user);
+      } else {
+        utils.setError(404, "User cannot be found");
+      }
+      return utils.send(res);
+    } catch (error) {
+      utils.setError(400, error.message);
+      return utils.send(res);
+    }
+  }
+
+  
 }
 
 module.exports = UserController;
