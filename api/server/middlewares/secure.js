@@ -44,13 +44,13 @@ function checkJwt(req, res, next) {
       decoded.iss !== process.env.JWT_ISSUER ||
       decoded.sub !== user.auth_sub
     ) {
-      utils.setError(403, "Not authorized");
+      utils.setError(401, "Not authorized");
       return utils.send(res);
     }
 
     next();
   } catch (error) {
-    utils.setError(403, error.message);
+    utils.setError(401, error.message);
     return utils.send(res);
   }
 }
