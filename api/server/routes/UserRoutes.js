@@ -1,4 +1,5 @@
 const express = require("express");
+const { checkJwt } = require("../middlewares/secure");
 const UserController = require("../controllers/UserController");
 
 const router = express.Router();
@@ -9,7 +10,8 @@ router.get("/:id", UserController.getUser);
 router.post("/signin", UserController.signIn);
 router.post("/", UserController.addUser);
 
-router.put("/:id", UserController.updateUser);
-router.delete("/:id", UserController.deleteUser);
+router.put("/:id", checkJwt, UserController.updateUser);
+router.delete("/:id", checkJwt, UserController.deleteUser);
+
 
 module.exports = router;
