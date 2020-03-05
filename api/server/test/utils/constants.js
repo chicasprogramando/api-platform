@@ -1,3 +1,5 @@
+const { sign } = require("../../middlewares/secure")
+
 const MOCKS = {
   USER: {
     user_name: "jennydoe",
@@ -5,6 +7,7 @@ const MOCKS = {
     email: "jennydoe@gmail.com"
   },
   PROFILE: {
+    name: "Lele",
     image_path: "https://avatars3.githubusercontent.com/u/3179348?s=460&v=4",
     linkedin: "https://www.linkedin.com/in/eleonora-lester-7a432022",
     github: "elstr",
@@ -37,6 +40,7 @@ const PROPS = {
   PROFILE: [
     "id",
     "UserId",
+    "name",
     "github",
     "twitter",
     "linkedin",
@@ -55,8 +59,11 @@ const FAKE_ID = {
   SKILL: "fb7456a4-e25c-4e21-96e7-39ebd22cc99d"
 };
 
+const TEST_TOKEN = sign(MOCKS.USER)
+
 module.exports = {
   MOCKS,
   PROPS,
-  FAKE_ID
+  FAKE_ID,
+  TEST_TOKEN
 };

@@ -5,7 +5,7 @@ const { expect } = chai;
 
 const server = require("../../index");
 const { cleanDB } = require("./utils/helpers");
-const { MOCKS, PROPS, FAKE_ID } = require("./utils/constants");
+const { MOCKS, PROPS, FAKE_ID, TEST_TOKEN } = require("./utils/constants");
 
 const userRoute = "/api/user";
 const skillRoute = "/api/skill";
@@ -18,6 +18,8 @@ describe("PROFILE", () => {
   let profileReturnedByPOST = {};
   let skillsFromGet, specialtiesFromGet;
   let newUser = {};
+
+  let token = `Bearer ${TEST_TOKEN}`;
 
   before(async () => {
     await cleanDB();
@@ -60,7 +62,6 @@ describe("PROFILE", () => {
    * Test the /POST profile
    */
   describe("\n ----- POST /profile ------------------------------\n", () => {
-
     // 1) Create a new user
     it("should create a new user in the DB", done => {
       chai
@@ -94,7 +95,6 @@ describe("PROFILE", () => {
           specialtiesFromGet = res.body.data.slice(0, 2);
           done();
         });
-       
     });
 
     // 2) Assign a new profile to the user
@@ -122,6 +122,7 @@ describe("PROFILE", () => {
           }
 
           expect(res.body.data.UserId).to.equal(newUser.id);
+          expect(res.body.data.name).to.equal(MOCKS.PROFILE.name);
           expect(res.body.data.github).to.equal(MOCKS.PROFILE.github);
           expect(res.body.data.twitter).to.equal(MOCKS.PROFILE.twitter);
           expect(res.body.data.linkedin).to.equal(MOCKS.PROFILE.linkedin);
@@ -176,6 +177,7 @@ describe("PROFILE", () => {
           for (let i = 0; i < PROPS.PROFILE.length; i++) {
             expect(res.body.data).to.have.property(PROPS.PROFILE[i]);
           }
+          expect(res.body.data.name).to.equal(MOCKS.PROFILE.name);
           expect(res.body.data.image_path).to.equal(MOCKS.PROFILE.image_path);
           expect(res.body.data.linkedin).to.equal(MOCKS.PROFILE.linkedin);
           expect(res.body.data.github).to.equal(MOCKS.PROFILE.github);
@@ -186,8 +188,9 @@ describe("PROFILE", () => {
           expect(res.body.data.specialty[0]).to.be.a("object");
           expect(res.body.data.specialty[0]).to.have.property("id");
           expect(res.body.data.specialty[0]).to.have.property("description");
+
           specialtiesFromGet.map((s, i) => {
-            const specialty = res.body.data.specialty[i]
+            const specialty = res.body.data.specialty[i];
             expect(s.id).to.equal(specialty.id);
             expect(s.description).to.equal(specialty.description);
           });
@@ -198,7 +201,7 @@ describe("PROFILE", () => {
           expect(res.body.data.skill[0]).to.have.property("id");
           expect(res.body.data.skill[0]).to.have.property("description");
           skillsFromGet.map((s, i) => {
-            const skill = res.body.data.skill[i]
+            const skill = res.body.data.skill[i];
             expect(s.id).to.equal(skill.id);
             expect(s.description).to.equal(skill.description);
           });
@@ -217,6 +220,7 @@ describe("PROFILE", () => {
       chai
         .request(server)
         .put(`${profileRoute}/${FAKE_ID.PROFILE}`)
+        .set("Authorization", token)
         .send({
           linkedin: "https://www.linkedin.com/aaaa",
           twitter: "https://www.twitter.com/aaaa"
@@ -232,7 +236,9 @@ describe("PROFILE", () => {
       chai
         .request(server)
         .put(`${profileRoute}/${profileReturnedByPOST.id}`)
+        .set("Authorization", token)
         .send({
+          name: "new name",
           linkedin: "https://www.linkedin.com/aaaa",
           twitter: "https://www.twitter.com/aaaa"
         })
@@ -242,9 +248,11 @@ describe("PROFILE", () => {
 
           expect(res.body.data).to.be.a("object");
 
+          expect(res.body.data).to.have.property("name");
           expect(res.body.data).to.have.property("linkedin");
           expect(res.body.data).to.have.property("twitter");
 
+          expect(res.body.data.name).to.equal("new name");
           expect(res.body.data.linkedin).to.equal(
             "https://www.linkedin.com/aaaa"
           );
@@ -266,6 +274,7 @@ describe("PROFILE", () => {
       chai
         .request(server)
         .delete(`${profileRoute}/${FAKE_ID.PROFILE}`)
+        .set("Authorization", token)
         .end(function(err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
@@ -276,6 +285,7 @@ describe("PROFILE", () => {
       chai
         .request(server)
         .delete(`${profileRoute}/${profileReturnedByPOST.id}`)
+        .set("Authorization", token)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");

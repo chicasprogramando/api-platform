@@ -2,11 +2,13 @@ const config = require("dotenv");
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
+
 const userRoutes = require("./server/routes/UserRoutes");
 const profileRoutes = require("./server/routes/ProfileRoutes");
 const specialtyRoutes = require("./server/routes/SpecialtyRoutes");
 const skillRoutes = require("./server/routes/SkillRoutes");
 const mailerRoutes = require("./server/routes/MailerRoutes");
+const { error } = require("./server/middlewares");
 
 config.config();
 
@@ -31,6 +33,9 @@ app.get("*", (req, res) =>
     message: "Welcome to this API."
   })
 );
+
+// Last middleware should always be error management
+app.use(error);
 
 app.listen(port, () => {
   console.log(`Server is running on PORT ${port}`);
