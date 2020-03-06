@@ -4,37 +4,36 @@ const utils = new Util();
 
 class MailerController {
   static async sendMail(req, res) {
-    try {
-      // async..await is not allowed in global scope, must use a wrapper
-
-      // create reusable transporter object using the default SMTP transport
-      let transporter = nodemailer.createTransport({
-        // service: "Gmail"
-
-        host: "smtp.mailtrap.io", //mailtrap for testing emails
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: process.env.MAILTRAP_USER,
-          pass: process.env.MAILTRAP_PASS
-        }
-      });
-      // send mail with defined transport object
-      let info = await transporter.sendMail({
-        from: '"Plataforma" <thisIsNeeded>', // sender address
-        to: "inveniahadouken@gmail.com", // list of receivers
-        subject: req.body.subject, // Subject line
-        text: "esto es text", // plain text body
-        html: "<b>Hello world?</b>" // html body
-      });
-
-      console.log("Message sent: %s", info.messageId);
-    } catch (error) {
-      utils.setError(500, "todo mal", error.message);
-      return utils.send(res);
-    }
-    utils.setSuccess(200, "todo pioli", []);
-    return utils.send(res);
+     try {
+        const transporter = nodemailer.createTransport({
+          service: process.env.EMAIL_SERVICE,
+          auth: {
+               user: process.env.EMAIL_USER,
+              pass: process.env.EMAIL_PASS 
+          }
+        });
+     
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: process.env.EMAIL_USER,
+          subject: `[Plataforma] ${req.body.subject}`,
+          text:`User email: ${req.body.email}  \n\n  ${ req.body.text}`
+        };
+       
+       const result = await transporter.sendMail(mailOptions);
+       
+       if(!result.rejected.length){ 
+         utils.setSuccess(200, 'Email sent',`${result.response} - messageId: ${result.messageId}`)
+       } else {
+         utils.setError(500, 'Email rejected', ...result)
+       }
+      
+       return utils.send(res);
+    
+     } catch (error) {
+       utils.setError(500, "Error occurred", error.message);
+       return utils.send(res);
+     }
   }
 }
 
