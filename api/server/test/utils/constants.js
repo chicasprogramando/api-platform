@@ -1,4 +1,4 @@
-const { sign } = require("../../middlewares/secure")
+const { sign } = require("../../middlewares/secure");
 
 const MOCKS = {
   USER: {
@@ -27,27 +27,8 @@ const MOCKS = {
 };
 
 const PROPS = {
-  USER: [
-    "id",
-    "user_name",
-    "auth_sub",
-    "email",
-    "accepted_terms",
-    "ProfileId",
-    "updatedAt",
-    "createdAt"
-  ],
-  PROFILE: [
-    "id",
-    "UserId",
-    "name",
-    "github",
-    "twitter",
-    "linkedin",
-    "image_path",
-    "createdAt",
-    "updatedAt"
-  ],
+  USER: ["id", "user_name", "auth_sub", "email", "accepted_terms", "ProfileId", "updatedAt", "createdAt"],
+  PROFILE: ["id", "UserId", "name", "github", "twitter", "linkedin", "image_path", "createdAt", "updatedAt"],
   SPECIALTY: ["id", "description", "createdAt", "updatedAt"],
   SKILL: ["id", "description", "createdAt", "updatedAt"]
 };
@@ -59,11 +40,20 @@ const FAKE_ID = {
   SKILL: "fb7456a4-e25c-4e21-96e7-39ebd22cc99d"
 };
 
-const TEST_TOKEN = sign(MOCKS.USER)
+const TEST_TOKEN = sign(MOCKS.USER);
+
+const ROUTES = {
+  userRoute: "/api/user",
+  skillRoute: "/api/skill",
+  profileRoute: "/api/profile",
+  specialtiesRoute: "/api/specialty",
+  mailerRoute: "/api/mailer"
+};
 
 module.exports = {
   MOCKS,
   PROPS,
   FAKE_ID,
-  TEST_TOKEN
+  TEST_TOKEN,
+  ROUTES
 };

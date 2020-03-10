@@ -5,9 +5,7 @@ const { expect } = chai;
 
 const server = require("../../index");
 const { cleanDB } = require("./utils/helpers");
-const { MOCKS, PROPS, FAKE_ID } = require("./utils/constants");
-
-const specialtyRoute = "/api/specialty";
+const { ROUTES, MOCKS, PROPS, FAKE_ID } = require("./utils/constants");
 
 chai.use(chaiHttp);
 
@@ -41,7 +39,7 @@ describe("SPECIALTY", () => {
     it("should return an array of specialties", done => {
       chai
         .request(server)
-        .get(specialtyRoute)
+        .get(ROUTES.specialtiesRoute)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
@@ -59,7 +57,7 @@ describe("SPECIALTY", () => {
       const description = "Test Specialty";
       chai
         .request(server)
-        .post(specialtyRoute)
+        .post(ROUTES.specialtiesRoute)
         .send({ description })
         .end((err, res) => {
           expect(res).to.have.status(201);
@@ -86,7 +84,7 @@ describe("SPECIALTY", () => {
     it("should return 404 because specialty doesn't exist", done => {
       chai
         .request(server)
-        .get(`${specialtyRoute}/${FAKE_ID.SPECIALTY}`)
+        .get(`${ROUTES.specialtiesRoute}/${FAKE_ID.SPECIALTY}`)
         .end(function(err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
@@ -96,7 +94,7 @@ describe("SPECIALTY", () => {
     it("should return a specific specialty", done => {
       chai
         .request(server)
-        .get(`${specialtyRoute}/${specialtyCreatedByPOST.id}`)
+        .get(`${ROUTES.specialtiesRoute}/${specialtyCreatedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
@@ -107,9 +105,7 @@ describe("SPECIALTY", () => {
           }
 
           expect(res.body.data.id).to.equal(specialtyCreatedByPOST.id);
-          expect(res.body.data.description).to.equal(
-            specialtyCreatedByPOST.description
-          );
+          expect(res.body.data.description).to.equal(specialtyCreatedByPOST.description);
 
           done();
         });
@@ -123,7 +119,7 @@ describe("SPECIALTY", () => {
     it("should return 404 because specialty doesn't exist", done => {
       chai
         .request(server)
-        .put(`${specialtyRoute}/${FAKE_ID.SPECIALTY}`)
+        .put(`${ROUTES.specialtiesRoute}/${FAKE_ID.SPECIALTY}`)
         .send({ description: "New test description" })
         .end(function(err, res) {
           expect(res).to.have.status(404);
@@ -135,7 +131,7 @@ describe("SPECIALTY", () => {
       const description = "Specialty Updated";
       chai
         .request(server)
-        .put(`${specialtyRoute}/${specialtyCreatedByPOST.id}`)
+        .put(`${ROUTES.specialtiesRoute}/${specialtyCreatedByPOST.id}`)
         .send({ description })
         .end(function(err, res) {
           expect(res).to.have.status(200);
@@ -159,7 +155,7 @@ describe("SPECIALTY", () => {
     it("should return 404 because specialty doesn't exist", done => {
       chai
         .request(server)
-        .delete(`${specialtyRoute}/${FAKE_ID.SPECIALTY}`)
+        .delete(`${ROUTES.specialtiesRoute}/${FAKE_ID.SPECIALTY}`)
         .end(function(err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
@@ -169,7 +165,7 @@ describe("SPECIALTY", () => {
     it("should delete the specialty created by POST", done => {
       chai
         .request(server)
-        .delete(`${specialtyRoute}/${specialtyCreatedByPOST.id}`)
+        .delete(`${ROUTES.specialtiesRoute}/${specialtyCreatedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");

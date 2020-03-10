@@ -5,9 +5,7 @@ const { expect } = chai;
 
 const server = require("../../index");
 const { cleanDB } = require("./utils/helpers");
-const { PROPS, FAKE_ID } = require("./utils/constants");
-
-const skillRoute = "/api/skill";
+const { ROUTES, PROPS, FAKE_ID } = require("./utils/constants");
 
 chai.use(chaiHttp);
 
@@ -41,7 +39,7 @@ describe("SKILL", () => {
     it("should return an array of skills", done => {
       chai
         .request(server)
-        .get(skillRoute)
+        .get(ROUTES.skillRoute)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
@@ -60,7 +58,7 @@ describe("SKILL", () => {
       const description = "Test Skill";
       chai
         .request(server)
-        .post(skillRoute)
+        .post(ROUTES.skillRoute)
         .send({ description })
         .end((err, res) => {
           expect(res).to.have.status(201);
@@ -87,7 +85,7 @@ describe("SKILL", () => {
     it("should return 404 because skill doesn't exist", done => {
       chai
         .request(server)
-        .get(`${skillRoute}/${FAKE_ID.SKILL}`)
+        .get(`${ROUTES.skillRoute}/${FAKE_ID.SKILL}`)
         .end(function(err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
@@ -97,7 +95,7 @@ describe("SKILL", () => {
     it("should return a specific skill", done => {
       chai
         .request(server)
-        .get(`${skillRoute}/${skillCreatedByPOST.id}`)
+        .get(`${ROUTES.skillRoute}/${skillCreatedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
@@ -106,11 +104,9 @@ describe("SKILL", () => {
           for (let i = 0; i < PROPS.SKILL.length; i++) {
             expect(res.body.data).to.have.property(PROPS.SKILL[i]);
           }
-          
+
           expect(res.body.data.id).to.equal(skillCreatedByPOST.id);
-          expect(res.body.data.description).to.equal(
-            skillCreatedByPOST.description
-          );
+          expect(res.body.data.description).to.equal(skillCreatedByPOST.description);
 
           done();
         });
@@ -124,7 +120,7 @@ describe("SKILL", () => {
     it("should return 404 because skill doesn't exist", done => {
       chai
         .request(server)
-        .put(`${skillRoute}/${FAKE_ID.SKILL}`)
+        .put(`${ROUTES.skillRoute}/${FAKE_ID.SKILL}`)
         .send({ description: "New test description" })
         .end(function(err, res) {
           expect(res).to.have.status(404);
@@ -136,7 +132,7 @@ describe("SKILL", () => {
       const description = "Skill Updated";
       chai
         .request(server)
-        .put(`${skillRoute}/${skillCreatedByPOST.id}`)
+        .put(`${ROUTES.skillRoute}/${skillCreatedByPOST.id}`)
         .send({ description })
         .end(function(err, res) {
           expect(res).to.have.status(200);
@@ -160,7 +156,7 @@ describe("SKILL", () => {
     it("should return 404 because skill doesn't exist", done => {
       chai
         .request(server)
-        .delete(`${skillRoute}/${FAKE_ID.SKILL}`)
+        .delete(`${ROUTES.skillRoute}/${FAKE_ID.SKILL}`)
         .end(function(err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
@@ -170,7 +166,7 @@ describe("SKILL", () => {
     it("should delete the skill created by POST", done => {
       chai
         .request(server)
-        .delete(`${skillRoute}/${skillCreatedByPOST.id}`)
+        .delete(`${ROUTES.skillRoute}/${skillCreatedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");

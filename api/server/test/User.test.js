@@ -5,17 +5,14 @@ const { expect } = chai;
 
 const server = require("../../index");
 const { cleanDB } = require("./utils/helpers");
-const { MOCKS, PROPS, FAKE_ID, TEST_TOKEN } = require("./utils/constants");
-
-const userRoute = "/api/user";
+const { ROUTES, MOCKS, PROPS, FAKE_ID, TEST_TOKEN } = require("./utils/constants");
 
 chai.use(chaiHttp);
 
 describe("USER", () => {
-  
   let userCreatedByPOST = {};
-  const token = `Bearer ${TEST_TOKEN}`
- 
+  const token = `Bearer ${TEST_TOKEN}`;
+
   before(async () => {
     await cleanDB();
   });
@@ -43,7 +40,7 @@ describe("USER", () => {
     it("should return an empty array", done => {
       chai
         .request(server)
-        .get(userRoute)
+        .get(ROUTES.userRoute)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
@@ -60,7 +57,7 @@ describe("USER", () => {
     it("should create a new user in the DB", done => {
       chai
         .request(server)
-        .post(userRoute)
+        .post(ROUTES.userRoute)
         .send({ ...MOCKS.USER })
         .end((err, res) => {
           expect(res).to.have.status(201);
@@ -84,17 +81,16 @@ describe("USER", () => {
     });
   });
 
-
-   /*
+  /*
    * Test the /POST user/signin
    */
   describe("\n ----- POST /user/signin ------------------------------\n", () => {
     it("should return user not found 404", done => {
       chai
         .request(server)
-        .post(`${userRoute}/signin`)
+        .post(`${ROUTES.userRoute}/signin`)
         .set("Authorization", token)
-        .send({email: "this-email@does-not.exist" })
+        .send({ email: "this-email@does-not.exist" })
         .end((err, res) => {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
@@ -104,9 +100,9 @@ describe("USER", () => {
     it("should return user info and profile for given email", done => {
       chai
         .request(server)
-        .post(`${userRoute}/signin`)
+        .post(`${ROUTES.userRoute}/signin`)
         .set("Authorization", token)
-        .send({email: MOCKS.USER.email })
+        .send({ email: MOCKS.USER.email })
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
@@ -134,7 +130,7 @@ describe("USER", () => {
     it("should return 404 because user doesn't exist", done => {
       chai
         .request(server)
-        .get(`${userRoute}/${FAKE_ID.USER}`)
+        .get(`${ROUTES.userRoute}/${FAKE_ID.USER}`)
         .end(function(err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
@@ -144,7 +140,7 @@ describe("USER", () => {
     it("should return a specific user", done => {
       chai
         .request(server)
-        .get(`${userRoute}/${userCreatedByPOST.id}`)
+        .get(`${ROUTES.userRoute}/${userCreatedByPOST.id}`)
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
@@ -161,14 +157,14 @@ describe("USER", () => {
     });
   });
   /*
-    * Test the /PUT user
-    * Will update the user created by POST above
-  */
+   * Test the /PUT user
+   * Will update the user created by POST above
+   */
   describe("\n----- PUT /user/:id ------------------------------\n", () => {
     it("should return 404 because user doesn't exist", done => {
       chai
         .request(server)
-        .put(`${userRoute}/${FAKE_ID.USER}`)
+        .put(`${ROUTES.userRoute}/${FAKE_ID.USER}`)
         .set("Authorization", token)
         .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
         .end(function(err, res) {
@@ -180,7 +176,7 @@ describe("USER", () => {
     it("should return the user updated", done => {
       chai
         .request(server)
-        .put(`${userRoute}/${userCreatedByPOST.id}`)
+        .put(`${ROUTES.userRoute}/${userCreatedByPOST.id}`)
         .set("Authorization", token)
         .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
         .end(function(err, res) {
@@ -207,7 +203,7 @@ describe("USER", () => {
     it("should return 404 because user doesn't exist", done => {
       chai
         .request(server)
-        .delete(`${userRoute}/${FAKE_ID.USER}`)
+        .delete(`${ROUTES.userRoute}/${FAKE_ID.USER}`)
         .set("Authorization", token)
         .end(function(err, res) {
           expect(res).to.have.status(404);
@@ -218,7 +214,7 @@ describe("USER", () => {
     it("should delete the user created by POST", done => {
       chai
         .request(server)
-        .delete(`${userRoute}/${userCreatedByPOST.id}`)
+        .delete(`${ROUTES.userRoute}/${userCreatedByPOST.id}`)
         .set("Authorization", token)
         .end(function(err, res) {
           expect(res).to.have.status(200);
