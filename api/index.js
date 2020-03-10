@@ -7,6 +7,7 @@ const userRoutes = require("./server/routes/UserRoutes");
 const profileRoutes = require("./server/routes/ProfileRoutes");
 const specialtyRoutes = require("./server/routes/SpecialtyRoutes");
 const skillRoutes = require("./server/routes/SkillRoutes");
+const mailerRoutes = require("./server/routes/MailerRoutes");
 const { error } = require("./server/middlewares");
 
 config.config();
@@ -24,6 +25,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/specialty", specialtyRoutes);
 app.use("/api/skill", skillRoutes);
+app.use("/api/mailer", mailerRoutes);
 
 // when a random route is inputed
 app.get("*", (req, res) =>
