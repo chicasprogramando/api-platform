@@ -51,12 +51,23 @@ class ProfileController {
   }
   static async getAllProfiles(req, res) {
     try {
-      const allProfiles = await ProfileService.getAllProfiles();
-      if (allProfiles.length > 0) {
-        utils.setSuccess(200, "Profiles retrieved", allProfiles);
+      if (req.query) {
+        const skills = req.query.skills ? req.query.skills.split(",") : null;
+        const specialties = req.query.specialties ? req.query.specialties.split(",") : null;
+
+        const profilesMatched = await ProfileService.searchProfiles({ skills, specialties });
+console.log({profilesMatched})
+        utils.setSuccess(200, "Profiles found", [] );
+
       } else {
-        utils.setSuccess(200, "No profiles found", []);
+        const allProfiles = await ProfileService.getAllProfiles();
+        if (allProfiles.length > 0) {
+          utils.setSuccess(200, "Profiles retrieved", allProfiles);
+        } else {
+          utils.setSuccess(200, "No profiles found", []);
+        }
       }
+
       return utils.send(res);
     } catch (error) {
       utils.setError(400, error.message);
@@ -86,18 +97,15 @@ class ProfileController {
           });
 
           // Map specialties
-           if (req.body.specialties) {
+          if (req.body.specialties) {
             const specialties = req.body.specialties;
-            await specialties.map(
-              async s => await createdProfile.addSpecialty(s.id)
-            );
+            await specialties.map(async s => await createdProfile.addSpecialty(s.id));
           }
           // Map Skills
           if (req.body.skills) {
             const skills = req.body.skills;
             await skills.map(async s => await createdProfile.addSkill(s.id));
           }
-        
         } else {
           // Updates only profile data no associations
           await ProfileService.updateProfile(id, { ...req.body });

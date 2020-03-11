@@ -70,6 +70,30 @@ class ProfileService {
       throw error;
     }
   }
+
+  static async searchProfiles(filters) {
+    console.log({filters});
+
+      return await database.Profile.findAll({ include: associations }, where: {skill});
+https://stackoverflow.com/questions/38918840/querying-on-where-association-in-sequelize
+    hp_country.findAll({
+    attributes: ['country_id', 'country_name'],
+    where: {
+        country_status: 1,
+        country_id: 1
+    },
+    include: [{
+        model: hp_state,
+        attributes: ['state_id', 'state_name'],
+        where: {
+            state_status: 1,
+            state_name: {
+                $like: '%ta%'
+            }
+        }
+    }]
+});
+  }
 }
 
 module.exports = ProfileService;
