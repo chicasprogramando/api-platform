@@ -1,4 +1,7 @@
 const database = require("../models");
+const Sequelize = require("sequelize");
+
+const Op = Sequelize.Op;
 
 const associations = [
   {
@@ -47,7 +50,10 @@ class ProfileService {
         where: { id: id }
       });
       if (profileToUpdate) {
-       return await database.Profile.update(updatedProfile, { where: { id: id }, include: associations });
+        return await database.Profile.update(updatedProfile, {
+          where: { id: id },
+          include: associations
+        });
       }
       return null;
     } catch (error) {
@@ -71,28 +77,35 @@ class ProfileService {
     }
   }
 
-  static async searchProfiles(filters) {
-    console.log({filters});
+  static async searchProfiles({ skills, specialties }) {
+    try {
+      let include = [];
+      if (skills)
+        include = [
+          ...include,
+          {
+            model: database.Skill,
+            as: "skill",
+            attributes: ["id", "description"],
+            where: { description: { [Op.in]: [...skills] } }
+          }
+        ];
+      if (specialties)
+        include = [
+          ...include,
+          {
+            model: database.Specialty,
+            as: "specialty",
+            attributes: ["id", "description"],
+            where: { description: { [Op.in]: [...specialties] } }
+          }
+        ];
 
-      return await database.Profile.findAll({ include: associations }, where: {skill});
-https://stackoverflow.com/questions/38918840/querying-on-where-association-in-sequelize
-    hp_country.findAll({
-    attributes: ['country_id', 'country_name'],
-    where: {
-        country_status: 1,
-        country_id: 1
-    },
-    include: [{
-        model: hp_state,
-        attributes: ['state_id', 'state_name'],
-        where: {
-            state_status: 1,
-            state_name: {
-                $like: '%ta%'
-            }
-        }
-    }]
-});
+      return await database.Profile.findAll({ include });
+      
+    } catch (error) {
+      throw error;
+    }
   }
 }
 
