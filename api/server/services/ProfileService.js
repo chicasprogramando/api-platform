@@ -79,30 +79,38 @@ class ProfileService {
 
   static async searchProfiles({ skills, specialties }) {
     try {
-      let include = [];
-      if (skills)
-        include = [
-          ...include,
-          {
-            model: database.Skill,
-            as: "skill",
-            attributes: ["id", "description"],
-            where: { description: { [Op.in]: [...skills] } }
-          }
-        ];
-      if (specialties)
-        include = [
-          ...include,
-          {
-            model: database.Specialty,
-            as: "specialty",
-            attributes: ["id", "description"],
-            where: { description: { [Op.in]: [...specialties] } }
-          }
-        ];
+      
+      /**
+       * Skills and specialties will alway be returned
+       * If user want's skills [react, redux]
+       * we return all profiles with react, redux PLUS the specialties of those profiles
+       * Same the other way around. If user searches specialties [Back End]
+       * we return all profiles that have backend PLUS their skills
+       */
+      const include = [
+        {
+          model: database.Skill,
+          as: "skill",
+          attributes: ["id", "description"],
+          through: {
+            attributes: []
+          },
+          where: skills ? { description: { [Op.in]: [...skills] } } : ""
+        },
+        {
+          model: database.Specialty,
+          as: "specialty",
+          attributes: ["id", "description"],
+          through: {
+            attributes: []
+          },
+          where: specialties
+            ? { description: { [Op.in]: [...specialties] } }
+            : ""
+        }
+      ];
 
       return await database.Profile.findAll({ include });
-      
     } catch (error) {
       throw error;
     }
