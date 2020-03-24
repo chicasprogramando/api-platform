@@ -79,7 +79,6 @@ class ProfileService {
 
   static async searchProfiles({ skills, specialties }) {
     try {
-      
       /**
        * Skills and specialties will alway be returned
        * If user want's skills [react, redux]
@@ -95,7 +94,7 @@ class ProfileService {
           through: {
             attributes: []
           },
-          where: skills ? { description: { [Op.in]: [...skills] } } : ""
+          where: skills ? { description: { [Op.in]: [...skills] } } : "",
         },
         {
           model: database.Specialty,
@@ -110,7 +109,15 @@ class ProfileService {
         }
       ];
 
-      return await database.Profile.findAll({ include });
+      const profilesMatched = await database.Profile.findAll({ include });
+      const ids = profilesMatched.map(p => p.dataValues.id)
+
+      const completeProfiles = await database.Profile.findAll({
+        where: { id: [...ids] },
+        include: associations
+      });
+
+      return completeProfiles
     } catch (error) {
       throw error;
     }
