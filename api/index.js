@@ -1,7 +1,11 @@
+const pg = require('pg');
+delete pg.native;
+
 const config = require("dotenv");
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
+const compression = require('compression');
 
 const userRoutes = require("./server/routes/UserRoutes");
 const profileRoutes = require("./server/routes/ProfileRoutes");
@@ -14,10 +18,12 @@ config.config();
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:8080" }));
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(compression());
 
 const port = process.env.PORT || 8000;
 
