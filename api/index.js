@@ -5,6 +5,7 @@ const config = require("dotenv");
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
+const compression = require('compression');
 
 const userRoutes = require("./server/routes/UserRoutes");
 const profileRoutes = require("./server/routes/ProfileRoutes");
@@ -21,6 +22,8 @@ app.use(cors({ origin: process.env.ORIGIN }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(compression());
 
 const port = process.env.PORT || 8000;
 
