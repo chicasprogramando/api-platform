@@ -1,3 +1,6 @@
+const pg = require('pg');
+delete pg.native;
+
 const config = require("dotenv");
 const cors = require("cors");
 const express = require("express");
