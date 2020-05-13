@@ -35,5 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.addHook('beforeSave', async(user) => user.dataValues.id = uuid())
+
   return User;
 };
