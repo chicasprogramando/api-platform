@@ -9,33 +9,34 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: uuid()
+        defaultValue: uuid(),
       },
       user_name: DataTypes.STRING,
-      auth_sub: DataTypes.STRING,
+      firebase_id: DataTypes.STRING,
       email: DataTypes.STRING,
       accepted_terms: DataTypes.BOOLEAN,
       ProfileId: {
         type: DataTypes.UUID,
+        allowNull: true,
         references: {
           model: "Profiles",
-          key: "id"
-        }
-      }
+          key: "id",
+        },
+      },
     },
     {}
   );
 
-  User.associate = function(models) {
+  User.associate = function (models) {
     User.hasOne(models.Profile, {
       foreignKey: "UserId",
       as: "profile",
-      onDelete: "cascade",
-      hooks: true
+      onDelete: "CASCADE",
+      hooks: true,
     });
   };
 
-  User.addHook('beforeSave', async(user) => user.dataValues.id = uuid())
+  User.addHook("beforeSave", async (user) => (user.dataValues.id = uuid()));
 
   return User;
 };

@@ -4,7 +4,7 @@ const utils = new Util();
 
 class UserController {
   static async addUser(req, res) {
-    if (!req.body.user_name || !req.body.auth_sub || !req.body.email) {
+    if (!req.body.firebase_id || !req.body.email) {
       utils.setError(400, "Please provide complete details");
       return utils.send(res);
     }
@@ -12,7 +12,11 @@ class UserController {
       const user = await UserService.getUserByEmail(req.body.email);
       if (!user) {
         const newUser = req.body;
+        newUser.user_name = req.body.email;
         newUser.accepted_terms = false;
+
+        console.log({ newUser });
+
         const createdUser = await UserService.addUser(newUser);
         utils.setSuccess(201, "User Added!", createdUser);
         return utils.send(res);
@@ -91,10 +95,10 @@ class UserController {
     }
   }
 
-  static async signIn(req, res) {
-    const { email } = req.body;
+  static async login(req, res) {
+    const { firebase_id } = req.body;
     try {
-      const user = await UserService.getUserByEmail(email);
+      const user = await UserService.getUserByFirebaseID(firebase_id);
       if (user) {
         utils.setSuccess(200, "Found user", user);
       } else {
@@ -106,8 +110,6 @@ class UserController {
       return utils.send(res);
     }
   }
-
-  
 }
 
 module.exports = UserController;

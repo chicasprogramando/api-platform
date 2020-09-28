@@ -7,11 +7,10 @@ const router = express.Router();
 router.get("/", UserController.getAllUsers);
 router.get("/:id", UserController.getUser);
 
-router.post("/signin", UserController.signIn);
-router.post("/", UserController.addUser);
+router.post("/login", checkJwt, UserController.login);
+router.post("/", checkJwt, UserController.addUser);
 
 router.put("/:id", checkJwt, UserController.updateUser);
 router.delete("/:id", checkJwt, UserController.deleteUser);
-
 
 module.exports = router;
