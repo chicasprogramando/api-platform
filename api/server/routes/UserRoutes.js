@@ -1,5 +1,5 @@
 const express = require("express");
-const { checkJwt } = require("../middlewares/secure");
+const checkJwt = require("../middlewares/secure");
 const UserController = require("../controllers/UserController");
 
 const router = express.Router();
@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/", UserController.getAllUsers);
 router.get("/:id", UserController.getUser);
 
+router.post("/");
 router.post("/login", checkJwt, UserController.login);
 router.post("/", checkJwt, UserController.addUser);
 

@@ -103,7 +103,6 @@ class ProfileController {
           // Map specialties
           if (req.body.specialties) {
             const specialties = req.body.specialties;
-            console.log({ specialties });
             await specialties.map(
               async (s) => await createdProfile.addSpecialty(s.id)
             );
@@ -111,7 +110,6 @@ class ProfileController {
           // Map Skills
           if (req.body.skills) {
             const skills = req.body.skills;
-            console.log({ skills });
             await skills.map(async (s) => await createdProfile.addSkill(s.id));
           }
         } else {

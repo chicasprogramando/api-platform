@@ -15,8 +15,6 @@ class UserController {
         newUser.user_name = req.body.email;
         newUser.accepted_terms = false;
 
-        console.log({ newUser });
-
         const createdUser = await UserService.addUser(newUser);
         utils.setSuccess(201, "User Added!", createdUser);
         return utils.send(res);

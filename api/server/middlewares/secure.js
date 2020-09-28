@@ -7,8 +7,8 @@ async function decodeHeader(req) {
     const authorization = req.headers.authorization || "";
     const token = getToken(authorization);
     const decoded = await verifyToken(token);
-    req.user = decoded;
 
+    req.user = decoded;
     return decoded;
   } catch (error) {
     throw error;
@@ -34,21 +34,22 @@ async function verifyToken(token) {
   }
 }
 
-async function checkJwt(req, res, next) {
-  try {
-    const { firebase_id } = req.body;
-    const decoded = await decodeHeader(req, res);
-    if (decoded.user_id !== firebase_id) {
-      utils.setError(401, "Not authorized");
+const checkJwt = async (req, res, next) => {
+  if (process.env.NODE_ENV !== "testing") {
+    try {
+      const { firebase_id } = req.body;
+      const decoded = await decodeHeader(req, res);
+      if (decoded.user_id !== firebase_id) {
+        utils.setError(401, "Not authorized");
+        return utils.send(res);
+      }
+      next();
+    } catch (error) {
+      utils.setError(401, error.message);
       return utils.send(res);
     }
-    next();
-  } catch (error) {
-    utils.setError(401, error.message);
-    return utils.send(res);
   }
-}
-
-module.exports = {
-  checkJwt,
+  next();
 };
+
+module.exports = checkJwt;

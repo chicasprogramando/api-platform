@@ -11,7 +11,7 @@ const specialTables = ["sequelize", "Sequelize", "Specialty", "Skill"];
 
 const cleanDB = async () => {
   return await Promise.all(
-    Object.keys(models).map(key => {
+    Object.keys(models).map((key) => {
       // only destroy our tables data, not sequelize
       if (specialTables.includes(key)) return null;
       return models[key].destroy({ where: {}, force: true });
@@ -20,5 +20,5 @@ const cleanDB = async () => {
 };
 
 module.exports = {
-  cleanDB
+  cleanDB,
 };

@@ -1,16 +1,14 @@
-const { sign } = require("../../middlewares/secure");
-
 const MOCKS = {
   USER: {
-    user_name: "jennydoe",
-    auth_sub: "google-oauth2|999999999999999999999",
-    email: "jennydoe@gmail.com",
+    user_name: "eleonora.lester@gmail.com",
+    email: "eleonora.lester@gmail.com",
+    firebase_id: "Jl4GiZBKKKfXMJbrsMd1FK3pOnX9",
   },
   PROFILE: {
     name: "Lele",
     image_path: "https://avatars3.githubusercontent.com/u/3179348?s=460&v=4",
     linkedin: "https://www.linkedin.com/in/eleonora-lester-7a432022",
-    github: "elstr",
+    github: "http://www.github.com/elstr",
     twitter: "http://www.twitter.com/lele_lester",
   },
   SPECIALTIES: [
@@ -30,7 +28,7 @@ const PROPS = {
   USER: [
     "id",
     "user_name",
-    "auth_sub",
+    "firebase_id",
     "email",
     "accepted_terms",
     "ProfileId",
@@ -59,8 +57,6 @@ const FAKE_ID = {
   SKILL: "fb7456a4-e25c-4e21-96e7-39ebd22cc99d",
 };
 
-const TEST_TOKEN = sign(MOCKS.USER);
-
 const ROUTES = {
   userRoute: "/api/user",
   skillRoute: "/api/skill",
@@ -73,6 +69,5 @@ module.exports = {
   MOCKS,
   PROPS,
   FAKE_ID,
-  TEST_TOKEN,
   ROUTES,
 };
