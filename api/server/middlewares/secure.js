@@ -1,18 +1,12 @@
+const firebase = require("firebase-admin");
 const Util = require("../utils/Utils");
 const utils = new Util();
 
-const jwt = require("jsonwebtoken");
-
-function sign(data) {
-  const token = jwt.sign(data, process.env.JWT_SECRET);
-  return token;
-}
-
-function decodeHeader(req) {
+async function decodeHeader(req) {
   try {
     const authorization = req.headers.authorization || "";
     const token = getToken(authorization);
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     req.user = decoded;
 
     return decoded;
@@ -31,23 +25,23 @@ function getToken(authorization) {
   return token.trim();
 }
 
-function verifyToken(token) {
-  return jwt.verify(token, process.env.JWT_SECRET);
+async function verifyToken(token) {
+  try {
+    const firebaseUser = await firebase.auth().verifyIdToken(token);
+    return firebaseUser;
+  } catch (error) {
+    throw new Error("Can't verify Id Token");
+  }
 }
 
-function checkJwt(req, res, next) {
+async function checkJwt(req, res, next) {
   try {
-    const user = req.body;
-    const decoded = decodeHeader(req, res);
-
-    if (
-      decoded.iss !== process.env.JWT_ISSUER ||
-      decoded.sub !== user.auth_sub
-    ) {
+    const { firebase_id } = req.body;
+    const decoded = await decodeHeader(req, res);
+    if (decoded.user_id !== firebase_id) {
       utils.setError(401, "Not authorized");
       return utils.send(res);
     }
-
     next();
   } catch (error) {
     utils.setError(401, error.message);
@@ -56,6 +50,5 @@ function checkJwt(req, res, next) {
 }
 
 module.exports = {
-  sign,
-  checkJwt
+  checkJwt,
 };

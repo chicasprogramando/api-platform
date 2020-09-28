@@ -19,7 +19,7 @@ class UserService {
   static async updateUser(id, updatedUser) {
     try {
       const userToUpdate = await database.User.findOne({
-        where: { id: id }
+        where: { id: id },
       });
       if (userToUpdate) {
         await database.User.update(updatedUser, { where: { id: id } });
@@ -38,9 +38,9 @@ class UserService {
         include: [
           {
             model: database.Profile,
-            as: "profile"
-          }
-        ]
+            as: "profile",
+          },
+        ],
       });
       return user;
     } catch (error) {
@@ -54,9 +54,25 @@ class UserService {
         include: [
           {
             model: database.Profile,
-            as: "profile"
-          }
-        ]
+            as: "profile",
+          },
+        ],
+      });
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getUserByFirebaseID(firebase_id) {
+    try {
+      const user = await database.User.findOne({
+        where: { firebase_id: firebase_id },
+        include: [
+          {
+            model: database.Profile,
+            as: "profile",
+          },
+        ],
       });
       return user;
     } catch (error) {
@@ -67,12 +83,12 @@ class UserService {
   static async deleteUser(id) {
     try {
       const userToDelete = await database.User.findOne({
-        where: { id: id }
+        where: { id: id },
       });
 
       if (userToDelete) {
         const deletedUser = await database.User.destroy({
-          where: { id: id }
+          where: { id: id },
         });
         return deletedUser;
       }

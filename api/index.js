@@ -1,11 +1,13 @@
-const pg = require('pg');
+require("dotenv").config();
+require("./server/config/firebase");
+
+const pg = require("pg");
 delete pg.native;
 
-const config = require("dotenv");
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
-const compression = require('compression');
+const compression = require("compression");
 
 const userRoutes = require("./server/routes/UserRoutes");
 const profileRoutes = require("./server/routes/ProfileRoutes");
@@ -13,8 +15,6 @@ const specialtyRoutes = require("./server/routes/SpecialtyRoutes");
 const skillRoutes = require("./server/routes/SkillRoutes");
 const mailerRoutes = require("./server/routes/MailerRoutes");
 const { error } = require("./server/middlewares");
-
-config.config();
 
 const app = express();
 
@@ -36,7 +36,7 @@ app.use("/api/mailer", mailerRoutes);
 // when a random route is inputed
 app.get("*", (req, res) =>
   res.status(200).send({
-    message: "Welcome to this API."
+    message: "Welcome to this API.",
   })
 );
 
