@@ -1,21 +1,18 @@
 const database = require("../models");
-const Sequelize = require("sequelize");
-
-const Op = Sequelize.Op;
 
 const associations = [
   {
     model: database.Specialty,
     as: "specialty",
     attributes: ["id", "description"],
-    through: { attributes: [] }
+    through: { attributes: [] },
   },
   {
     model: database.Skill,
     as: "skill",
     attributes: ["id", "description"],
-    through: { attributes: [] }
-  }
+    through: { attributes: [] },
+  },
 ];
 
 class ProfileService {
@@ -30,7 +27,7 @@ class ProfileService {
     try {
       const profile = await database.Profile.findOne({
         where: { id: id },
-        include: associations
+        include: associations,
       });
       return profile;
     } catch (error) {
@@ -47,12 +44,12 @@ class ProfileService {
   static async updateProfile(id, updatedProfile) {
     try {
       const profileToUpdate = await database.Profile.findOne({
-        where: { id: id }
+        where: { id: id },
       });
       if (profileToUpdate) {
         return await database.Profile.update(updatedProfile, {
           where: { id: id },
-          include: associations
+          include: associations,
         });
       }
       return null;
@@ -63,11 +60,11 @@ class ProfileService {
   static async deleteProfile(id) {
     try {
       const profileToDelete = await database.Profile.findOne({
-        where: { id: id }
+        where: { id: id },
       });
       if (profileToDelete) {
         const deletedProfile = await database.Profile.destroy({
-          where: { id: id }
+          where: { id: id },
         });
         return deletedProfile;
       }
@@ -80,44 +77,35 @@ class ProfileService {
   static async searchProfiles({ skills, specialties }) {
     try {
       /**
-       * Skills and specialties will alway be returned
-       * If user want's skills [react, redux]
-       * we return all profiles with react, redux PLUS the specialties of those profiles
-       * Same the other way around. If user searches specialties [Back End]
-       * we return all profiles that have backend PLUS their skills
-       */
-      const include = [
-        {
-          model: database.Skill,
-          as: "skill",
-          attributes: ["id", "description"],
-          through: {
-            attributes: []
-          },
-          where: skills ? { description: { [Op.in]: [...skills] } } : "",
-        },
-        {
-          model: database.Specialty,
-          as: "specialty",
-          attributes: ["id", "description"],
-          through: {
-            attributes: []
-          },
-          where: specialties
-            ? { description: { [Op.in]: [...specialties] } }
-            : ""
-        }
-      ];
+       * We need to map specialties and skills because when we string interpolate 
+       * to build the AND query the single quotes are lost.
+      */
+       const withSpecialties = specialties && `AND "SP"."description" = ANY(ARRAY[${specialties.map(x => "'" + x + "'")}])` 
+       const withSkills = skills && `AND "SK"."description" = ANY(ARRAY[${skills.map(x => "'" + x + "'")}])`
 
-      const profilesMatched = await database.Profile.findAll({ include });
-      const ids = profilesMatched.map(p => p.dataValues.id)
 
-      const completeProfiles = await database.Profile.findAll({
-        where: { id: [...ids] },
-        include: associations
-      });
+       /**
+        * We run a raw query because sequelize can't handle this special query case
+        * We need all profiles that have certain specialties and certain skills given
+        */
+       const q =  `SELECT DISTINCT "PR".id
+       FROM  public."Profiles" AS "PR", 
+             public."Skills" AS "SK",
+             public."Profile_Skills" as "PSK",
+             public."Profile_Specialties" as "PSP",
+             public."Specialties" as "SP"
+       WHERE "PR".id = "PSK"."ProfileId"
+       AND "SK".id = "PSK"."SkillId" 
+       AND "PR".id = "PSP"."ProfileId"
+       AND "SP".id = "PSP"."SpecialtyId" 
+       ${withSkills ? withSkills : '' }
+       ${withSpecialties ? withSpecialties : ''}
+       `
 
-      return completeProfiles
+      const [results, _] = await database.sequelize.query(q);
+
+      return results
+
     } catch (error) {
       throw error;
     }
