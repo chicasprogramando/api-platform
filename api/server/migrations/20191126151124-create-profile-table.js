@@ -8,31 +8,31 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal("uuid_generate_v4()")
+        defaultValue: Sequelize.literal("uuid_generate_v4()"),
       },
       image_path: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       linkedin: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       github: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       twitter: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable("Profiles");
-  }
+  },
 };
