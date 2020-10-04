@@ -1,5 +1,5 @@
 const express = require("express");
-const { checkJwt } = require("../middlewares/secure");
+const checkJwt = require("../middlewares/secure");
 const ProfileController = require("../controllers/ProfileController");
 
 const router = express.Router();

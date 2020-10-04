@@ -28,12 +28,11 @@ class Util {
     };
 
     if (this.type === "success") {
-      // We need a copy of result because logger modifies the original adding extra info
-      // that we don't want to send back in the response
-      logger.info(Object.assign({},result));
       return res.status(this.statusCode).json(result);
     }
 
+    // We need a copy of result because logger modifies the original adding extra info
+    // that we don't want to send back in the response
     logger.error(Object.assign({}, result));
     return res.status(this.statusCode).json({
       status: this.type,

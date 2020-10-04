@@ -5,7 +5,13 @@ const { expect } = chai;
 
 const server = require("../../index");
 const { cleanDB } = require("./utils/helpers");
-const { ROUTES, MOCKS, PROPS, FAKE_ID, TEST_TOKEN } = require("./utils/constants");
+const {
+  ROUTES,
+  MOCKS,
+  PROPS,
+  FAKE_ID,
+  TEST_TOKEN,
+} = require("./utils/constants");
 
 chai.use(chaiHttp);
 
@@ -24,7 +30,7 @@ describe("PROFILE", () => {
    * Test the /GET default
    */
   describe("\n ----- GET / default msg -------------------------\n", () => {
-    it("should show welcome message", done => {
+    it("should show welcome message", (done) => {
       chai
         .request(server)
         .get("/")
@@ -40,11 +46,11 @@ describe("PROFILE", () => {
    * Test the /GET all profiles
    */
   describe("\n ----- GET /profile ------------------------------\n", () => {
-    it("should return an empty array", done => {
+    it("should return an empty array", (done) => {
       chai
         .request(server)
         .get(ROUTES.profileRoute)
-        .end(function(err, res) {
+        .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
           expect(res.body.data).to.have.lengthOf(0);
@@ -58,7 +64,7 @@ describe("PROFILE", () => {
    */
   describe("\n ----- POST /profile ------------------------------\n", () => {
     // 1) Create a new user
-    it("should create a new user in the DB", done => {
+    it("should create a new user in the DB", (done) => {
       chai
         .request(server)
         .post(ROUTES.userRoute)
@@ -72,7 +78,7 @@ describe("PROFILE", () => {
         });
     });
     // Get the skills and specialties from the DB
-    it("should get skills and specialties from the DB", done => {
+    it("should get skills and specialties from the DB", (done) => {
       chai
         .request(server)
         .get(ROUTES.skillRoute)
@@ -93,12 +99,15 @@ describe("PROFILE", () => {
     });
 
     // 2) Assign a new profile to the user
-    it("should create a new profile in the DB with new user id", done => {
+    it("should create a new profile in the DB with new user id", (done) => {
       const newProfile = Object.assign({}, MOCKS.PROFILE, {
         specialties: [...specialtiesFromGet],
-        skills: [...skillsFromGet]
+        skills: [...skillsFromGet],
       });
-      console.log("*********************NEW PROFILE***************************", newProfile);
+      console.log(
+        "*********************NEW PROFILE***************************",
+        newProfile
+      );
 
       chai
         .request(server)
@@ -126,7 +135,7 @@ describe("PROFILE", () => {
         });
     });
 
-    it("should check that user.ProfileId is not null and is eq to the profile id created previously", done => {
+    it("should check that user.ProfileId is not null and is eq to the profile id created previously", (done) => {
       chai
         .request(server)
         .get(`${ROUTES.userRoute}/${newUser.id}`)
@@ -146,21 +155,21 @@ describe("PROFILE", () => {
    * Test the /GET specific profile
    */
   describe("\n----- GET /profile/:id ------------------------------\n", () => {
-    it("should return 404 because user doesn't exist", done => {
+    it("should return 404 because user doesn't exist", (done) => {
       chai
         .request(server)
         .get(`${ROUTES.profileRoute}/${FAKE_ID.PROFILE}`)
-        .end(function(err, res) {
+        .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
           done();
         });
     });
-    it("should return a specific profile including specialties", done => {
+    it("should return a specific profile including specialties", (done) => {
       chai
         .request(server)
         .get(`${ROUTES.profileRoute}/${profileReturnedByPOST.id}`)
-        .end(function(err, res) {
+        .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
 
@@ -208,23 +217,23 @@ describe("PROFILE", () => {
    * Will update the profile created by POST above
    */
   describe("\n----- PUT /profile/:id ------------------------------\n", () => {
-    it("should return 404 because profile doesn't exist", done => {
+    it("should return 404 because profile doesn't exist", (done) => {
       chai
         .request(server)
         .put(`${ROUTES.profileRoute}/${FAKE_ID.PROFILE}`)
         .set("Authorization", token)
         .send({
           linkedin: "https://www.linkedin.com/aaaa",
-          twitter: "https://www.twitter.com/aaaa"
+          twitter: "https://www.twitter.com/aaaa",
         })
-        .end(function(err, res) {
+        .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
           done();
         });
     });
 
-    it("should return the profile updated", done => {
+    it("should return the profile updated", (done) => {
       chai
         .request(server)
         .put(`${ROUTES.profileRoute}/${profileReturnedByPOST.id}`)
@@ -232,9 +241,9 @@ describe("PROFILE", () => {
         .send({
           name: "new name",
           linkedin: "https://www.linkedin.com/aaaa",
-          twitter: "https://www.twitter.com/aaaa"
+          twitter: "https://www.twitter.com/aaaa",
         })
-        .end(function(err, res) {
+        .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
 
@@ -245,8 +254,12 @@ describe("PROFILE", () => {
           expect(res.body.data).to.have.property("twitter");
 
           expect(res.body.data.name).to.equal("new name");
-          expect(res.body.data.linkedin).to.equal("https://www.linkedin.com/aaaa");
-          expect(res.body.data.twitter).to.equal("https://www.twitter.com/aaaa");
+          expect(res.body.data.linkedin).to.equal(
+            "https://www.linkedin.com/aaaa"
+          );
+          expect(res.body.data.twitter).to.equal(
+            "https://www.twitter.com/aaaa"
+          );
 
           done();
         });
@@ -258,23 +271,23 @@ describe("PROFILE", () => {
    * Will delete the profile created by POST above
    */
   describe("\n----- DELETE /profile/:id ------------------------------\n", () => {
-    it("should return 404 because profile doesn't exist", done => {
+    it("should return 404 because profile doesn't exist", (done) => {
       chai
         .request(server)
         .delete(`${ROUTES.profileRoute}/${FAKE_ID.PROFILE}`)
         .set("Authorization", token)
-        .end(function(err, res) {
+        .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
           done();
         });
     });
-    it("should delete the profile created by POST", done => {
+    it("should delete the profile created by POST", (done) => {
       chai
         .request(server)
         .delete(`${ROUTES.profileRoute}/${profileReturnedByPOST.id}`)
         .set("Authorization", token)
-        .end(function(err, res) {
+        .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
           done();
