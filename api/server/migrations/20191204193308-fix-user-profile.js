@@ -6,14 +6,14 @@ module.exports = {
       type: Sequelize.UUID,
       references: {
         model: "Profiles",
-        key: "id"
+        key: "id",
       },
       onUpdate: "CASCADE",
-      onDelete: "SET NULL"
+      onDelete: "SET NULL",
     });
   },
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.removeColumn("Users", "ProfileId");
-  }
+  },
 };
