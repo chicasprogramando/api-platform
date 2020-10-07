@@ -49,6 +49,8 @@ const checkJwt = async (req, res, next) => {
       utils.setError(401, error.message);
       return utils.send(res);
     }
+  } else {
+    next();
   }
 };
 
