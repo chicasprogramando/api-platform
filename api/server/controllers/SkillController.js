@@ -7,16 +7,13 @@ class SkillController {
     if (req.body.description) {
       const newSkill = req.body;
       try {
-        const createdSkill = await DBService.create("Skill", newSkill)
-        utils.setSuccess(201, "Skill Created!", createdSkill);
-        return utils.send(res);
+        const createdSkill = await DBService.create("Skill", newSkill);
+        utils.setSuccess(201, "Skill Created!", createdSkill).send(res);
       } catch (error) {
-        utils.setError(400, error.message);
-        return utils.send(res);
+        utils.setError(400, error.message).send(res);
       }
     } else {
-      utils.setError(400, "Please provide complete details");
-      return utils.send(res);
+      utils.setError(400, "Please provide complete details").send(res);
     }
   }
   static async getSkill(req, res) {
@@ -28,10 +25,9 @@ class SkillController {
       } else {
         utils.setSuccess(200, "Found Skill", skill);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(404, error.message);
-      return utils.send(res);
+      utils.setError(404, error.message).send(res);
     }
   }
   static async getAllSkills(req, res) {
@@ -42,29 +38,24 @@ class SkillController {
       } else {
         utils.setSuccess(200, "No skills found", []);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(400, error.message);
-      return utils.send(res);
+      utils.setError(400, error.message).send(res);
     }
   }
   static async updateSkill(req, res) {
     const alteredSkill = req.body;
     const { id } = req.params;
     try {
-      const updatedSkill = await DBService.update("Skill",
-        id,
-        alteredSkill
-      );
+      const updatedSkill = await DBService.update("Skill", id, alteredSkill);
       if (!updatedSkill) {
         utils.setError(404, `Cannot find skill with the id: ${id}`);
       } else {
         utils.setSuccess(200, "skill updated", updatedSkill);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(404, error.message);
-      return utils.send(res);
+      utils.setError(404, error.message).send(res);
     }
   }
   static async deleteSkill(req, res) {
@@ -76,10 +67,9 @@ class SkillController {
       } else {
         utils.setError(404, `Skill with the id ${id} cannot be found`);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(400, error.message);
-      return utils.send(res);
+      utils.setError(400, error.message).send(res);
     }
   }
 }
