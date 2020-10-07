@@ -5,8 +5,7 @@ const utils = new Util();
 class UserController {
   static async addUser(req, res) {
     if (!req.body.firebase_id || !req.body.email) {
-      utils.setError(400, "Please provide complete details");
-      return utils.send(res);
+      utils.setError(400, "Please provide complete details").send(res);
     }
     try {
       const user = await UserService.getUserByEmail(req.body.email);
@@ -17,14 +16,12 @@ class UserController {
 
         const createdUser = await UserService.addUser(newUser);
         utils.setSuccess(201, "User Added!", createdUser);
-        return utils.send(res);
       } else {
         utils.setError(400, "User already exists");
-        return utils.send(res);
       }
+      utils.send(res);
     } catch (error) {
-      utils.setError(404, error.message);
-      return utils.send(res);
+      utils.setError(404, error.message).send(res);
     }
   }
 
@@ -86,10 +83,9 @@ class UserController {
       } else {
         utils.setError(404, `User with the id ${id} cannot be found`);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(400, error.message);
-      return utils.send(res);
+      utils.setError(400, error.message).send(res);
     }
   }
 
@@ -102,10 +98,9 @@ class UserController {
       } else {
         utils.setError(404, "User cannot be found");
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(400, error.message);
-      return utils.send(res);
+      utils.setError(400, error.message).send(res);
     }
   }
 }

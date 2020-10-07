@@ -42,14 +42,14 @@ const checkJwt = async (req, res, next) => {
       if (decoded.user_id !== firebase_id) {
         utils.setError(401, "Not authorized");
         return utils.send(res);
+      } else {
+        next();
       }
-      next();
     } catch (error) {
       utils.setError(401, error.message);
       return utils.send(res);
     }
   }
-  next();
 };
 
 module.exports = checkJwt;
