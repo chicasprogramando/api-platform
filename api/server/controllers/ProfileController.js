@@ -24,14 +24,12 @@ class ProfileController {
         }
 
         utils.setSuccess(201, "Profile Created!", createdProfile);
-        return utils.send(res);
+        utils.send(res);
       } catch (error) {
-        utils.setError(400, error.message);
-        return utils.send(res);
+        utils.setError(400, error.message).send(res);
       }
     } else {
-      utils.setError(400, "Please provide complete details");
-      return utils.send(res);
+      utils.setError(400, "Please provide complete details").send(res);
     }
   }
   static async getProfile(req, res) {
@@ -43,10 +41,9 @@ class ProfileController {
       } else {
         utils.setSuccess(200, "Found Profile", profile);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(404, error.message);
-      return utils.send(res);
+      utils.setError(404, error.message).send(res);
     }
   }
   static async getAllProfiles(req, res) {
@@ -78,6 +75,7 @@ class ProfileController {
       return utils.send(res);
     }
   }
+
   static async updateProfile(req, res) {
     const { id } = req.params;
     try {
@@ -125,10 +123,9 @@ class ProfileController {
         utils.setSuccess(200, "Profile updated", updatedProfile);
       }
 
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(404, error.message);
-      return utils.send(res);
+      utils.setError(404, error.message).send(res);
     }
   }
 
@@ -141,10 +138,9 @@ class ProfileController {
       } else {
         utils.setError(404, `Profile with the id ${id} cannot be found`);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(400, error.message);
-      return utils.send(res);
+      utils.setError(400, error.message).send(res);
     }
   }
 }

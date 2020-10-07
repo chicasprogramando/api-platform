@@ -7,16 +7,15 @@ class SpecialtyController {
     if (req.body.description) {
       const newSpecialty = req.body;
       try {
-        const createdSpecialty = await SpecialtyService.addSpecialty(newSpecialty);
-        utils.setSuccess(201, "Specialty Created!", createdSpecialty);
-        return utils.send(res);
+        const createdSpecialty = await SpecialtyService.addSpecialty(
+          newSpecialty
+        );
+        utils.setSuccess(201, "Specialty Created!", createdSpecialty).send(res);
       } catch (error) {
-        utils.setError(400, error.message);
-        return utils.send(res);
+        utils.setError(400, error.message).send(res);
       }
     } else {
-      utils.setError(400, "Please provide complete details");
-      return utils.send(res);
+      utils.setError(400, "Please provide complete details").send(res);
     }
   }
   static async getSpecialty(req, res) {
@@ -28,10 +27,9 @@ class SpecialtyController {
       } else {
         utils.setSuccess(200, "Found Specialty", specialty);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(404, error.message);
-      return utils.send(res);
+      utils.setError(404, error.message).send(res);
     }
   }
   static async getAllSpecialties(req, res) {
@@ -42,10 +40,9 @@ class SpecialtyController {
       } else {
         utils.setSuccess(200, "No specialties found", []);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(400, error.message);
-      return utils.send(res);
+      utils.setError(400, error.message).send(res);
     }
   }
   static async updateSpecialty(req, res) {
@@ -61,10 +58,9 @@ class SpecialtyController {
       } else {
         utils.setSuccess(200, "Specialty updated", updatedSpecialty);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(404, error.message);
-      return utils.send(res);
+      utils.setError(404, error.message).send(res);
     }
   }
   static async deleteSpecialty(req, res) {
@@ -76,10 +72,9 @@ class SpecialtyController {
       } else {
         utils.setError(404, `Specialty with the id ${id} cannot be found`);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(400, error.message);
-      return utils.send(res);
+      utils.setError(400, error.message).send(res);
     }
   }
 }
