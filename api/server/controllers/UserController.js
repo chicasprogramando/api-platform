@@ -35,10 +35,9 @@ class UserController {
       } else {
         utils.setSuccess(200, "User updated", updatedUser);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(404, error.message);
-      return utils.send(res);
+      utils.setError(404, error.message).send(res);
     }
   }
 
@@ -50,10 +49,9 @@ class UserController {
       } else {
         utils.setSuccess(200, "No users found", []);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(400, error.message);
-      return utils.send(res);
+      utils.setError(400, error.message).send(res);
     }
   }
 
@@ -66,10 +64,9 @@ class UserController {
       } else {
         utils.setError(404, `Cannot find user`);
       }
-      return utils.send(res);
+      utils.send(res);
     } catch (error) {
-      utils.setError(404, error.message);
-      return utils.send(res);
+      utils.setError(404, error.message).send(res);
     }
   }
 
