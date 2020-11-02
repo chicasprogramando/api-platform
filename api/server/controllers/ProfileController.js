@@ -98,17 +98,18 @@ class ProfileController {
             ProfileId: createdProfile.id,
           });
 
+
+          const {specialties, skills}  = req.body
           // Map specialties
-          if (req.body.specialties) {
-            const specialties = req.body.specialties;
-            await specialties.map(
-              async (s) => await createdProfile.addSpecialty(s.id)
+          if (specialties) {
+             specialties.map(
+              async (s) => await createdProfile.addSpecialty(s)
             );
           }
+
           // Map Skills
-          if (req.body.skills) {
-            const skills = req.body.skills;
-            await skills.map(async (s) => await createdProfile.addSkill(s.id));
+          if (skills) {
+            await skills.map(async (s) => await createdProfile.addSkill(s));
           }
         } else {
           // Updates only profile data no associations
