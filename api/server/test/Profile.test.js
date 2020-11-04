@@ -165,7 +165,7 @@ describe("PROFILE", () => {
           done();
         });
     });
-    it("should return a specific profile including specialties", (done) => {
+    it("should return a specific profile including specialties and skills", (done) => {
       chai
         .request(server)
         .get(`${ROUTES.profileRoute}/${profileReturnedByPOST.id}`)
@@ -189,11 +189,9 @@ describe("PROFILE", () => {
           expect(res.body.data.specialty[0]).to.be.a("object");
           expect(res.body.data.specialty[0]).to.have.property("id");
           expect(res.body.data.specialty[0]).to.have.property("description");
-
-          specialtiesFromGet.map((s, i) => {
-            const specialty = res.body.data.specialty[i];
-            expect(s.id).to.equal(specialty.id);
-            expect(s.description).to.equal(specialty.description);
+          specialtiesFromGet.map(s => {
+            const specialtyFound = res.body.data.specialty.find(resSpecialty => resSpecialty.id === s.id)
+            expect(specialtyFound).to.not.be.undefined;
           });
 
           // Validate profile SKILLS
@@ -201,10 +199,9 @@ describe("PROFILE", () => {
           expect(res.body.data.skill[0]).to.be.a("object");
           expect(res.body.data.skill[0]).to.have.property("id");
           expect(res.body.data.skill[0]).to.have.property("description");
-          skillsFromGet.map((s, i) => {
-            const skill = res.body.data.skill[i];
-            expect(s.id).to.equal(skill.id);
-            expect(s.description).to.equal(skill.description);
+          skillsFromGet.map(s => {
+            const skillFound = res.body.data.skill.find(resSkill => resSkill.id === s.id)
+            expect(skillFound).to.not.be.undefined;
           });
 
           done();
