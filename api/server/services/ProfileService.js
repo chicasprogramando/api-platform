@@ -43,7 +43,6 @@ class ProfileService {
   }
   static async updateProfile(id, updatedProfile) {
     try {
-      console.log("LO QUE LLEGA - ", updatedProfile);
       const profileToUpdate = await database.Profile.findOne({
         where: { id: id },
       });
@@ -64,10 +63,9 @@ class ProfileService {
         where: { id: id },
       });
       if (profileToDelete) {
-        const deletedProfile = await database.Profile.destroy({
+        return await database.Profile.destroy({
           where: { id: id },
         });
-        return deletedProfile;
       }
       return null;
     } catch (error) {
