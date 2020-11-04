@@ -101,18 +101,14 @@ class ProfileController {
           // 5) Add specialties and skills
           const {specialties, skills}  = req.body
           if (specialties) {
-            await Promise.all(
-              specialties.map(
-                 (s) =>  createdProfile.addSpecialty(s)
-              )
+             Promise.all(
+              specialties.map(s => createdProfile.addSpecialty(s))
             )
           }
 
           if (skills) {
-            await Promise.all(
-              skills.map(
-                 (s) =>  createdProfile.addSkill(s)
-              )
+             Promise.all(
+              skills.map(s => createdProfile.addSkill(s))
             )
           }
 

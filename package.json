@@ -10,7 +10,7 @@
     "migrate:undo": "NODE_ENV=development npx sequelize-cli db:migrate:undo:all",
     "migrate:testing": "NODE_ENV=testing sequelize db:migrate",
     "pretest": "NODE_ENV=testing sequelize db:migrate",
-    "test": "npm run pretest && NODE_ENV=testing mocha './api/server/test/*.test.js' --timeout 10000 --exit",
+    "test": "npm run pretest && NODE_ENV=testing mocha './api/server/test/*.test.js' --timeout 100000000 --exit",
     "cover": "nyc -x \"./node_modules/\" npm run test"
   },
   "keywords": [],
