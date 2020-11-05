@@ -5,23 +5,14 @@ const { expect } = chai;
 
 const server = require("../../index");
 const { cleanDB } = require("./utils/helpers");
-const {
-  ROUTES,
-  MOCKS,
-  PROPS,
-  FAKE_ID,
-  TEST_TOKEN,
-} = require("./utils/constants");
+const { ROUTES, MOCKS, PROPS, FAKE_ID } = require("./utils/constants");
 
 chai.use(chaiHttp);
 
 describe("USER", () => {
   let userCreatedByPOST = {};
-  const token = `Bearer ${TEST_TOKEN}`;
 
-  before(async () => {
-    await cleanDB();
-  });
+  before(async () => await cleanDB());
 
   /*
    * Test the /GET default
