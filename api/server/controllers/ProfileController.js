@@ -99,13 +99,13 @@ class ProfileController {
           });
 
           // 5) Add specialties and skills
-          // const { specialties, skills } = req.body;
-          // if (specialties) {
-          //   Promise.all(specialties.map((s) => createdProfile.addSpecialty(s)));
-          // }
-          // if (skills) {
-          //   Promise.all(skills.map((s) => createdProfile.addSkill(s)));
-          // }
+          const { specialties, skills } = req.body;
+          if (specialties) {
+            Promise.all(specialties.map((s) => createdProfile.addSpecialty(s)));
+          }
+          if (skills) {
+            Promise.all(skills.map((s) => createdProfile.addSkill(s)));
+          }
         } else {
           await ProfileService.updateProfile(id, { ...req.body });
         }
