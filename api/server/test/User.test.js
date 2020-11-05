@@ -184,15 +184,11 @@ describe("USER", () => {
         .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
-
           expect(res.body.data).to.be.a("object");
-
           expect(res.body.data).to.have.property("user_name");
           expect(res.body.data).to.have.property("email");
-
           expect(res.body.data.user_name).to.equal("janedoe");
           expect(res.body.data.email).to.equal("janedoe@gmail.com");
-
           done();
         });
     });

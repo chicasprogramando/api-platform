@@ -77,7 +77,7 @@ describe("PROFILE", () => {
           done();
         });
     });
-    // Get the skills and specialties from the DB
+    // Get the skills DB
     it("should get skills and specialties from the DB", (done) => {
       chai
         .request(server)
@@ -86,7 +86,11 @@ describe("PROFILE", () => {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
           skillsFromGet = res.body.data.slice(0, 4);
+          done();
         });
+    });
+    // Get the specialties DB
+    it("should get specialties from the DB", (done) => {
       chai
         .request(server)
         .get(ROUTES.specialtiesRoute)
@@ -189,8 +193,11 @@ describe("PROFILE", () => {
           expect(res.body.data.specialty[0]).to.be.a("object");
           expect(res.body.data.specialty[0]).to.have.property("id");
           expect(res.body.data.specialty[0]).to.have.property("description");
-          specialtiesFromGet.map(s => {
-            const specialtyFound = res.body.data.specialty.find(resSpecialty => resSpecialty.id === s.id)
+
+          specialtiesFromGet.map((s) => {
+            const specialtyFound = res.body.data.specialty.find(
+              (resSpecialty) => resSpecialty.id === s.id
+            );
             expect(specialtyFound).to.not.be.undefined;
           });
 
@@ -199,8 +206,10 @@ describe("PROFILE", () => {
           expect(res.body.data.skill[0]).to.be.a("object");
           expect(res.body.data.skill[0]).to.have.property("id");
           expect(res.body.data.skill[0]).to.have.property("description");
-          skillsFromGet.map(s => {
-            const skillFound = res.body.data.skill.find(resSkill => resSkill.id === s.id)
+          skillsFromGet.map((s) => {
+            const skillFound = res.body.data.skill.find(
+              (resSkill) => resSkill.id === s.id
+            );
             expect(skillFound).to.not.be.undefined;
           });
 

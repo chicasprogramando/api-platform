@@ -138,13 +138,9 @@ describe("SPECIALTY", () => {
         .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
-
           expect(res.body.data).to.be.a("object");
-
           expect(res.body.data).to.have.property("description");
-
           expect(res.body.data.description).to.equal(description);
-
           done();
         });
     });

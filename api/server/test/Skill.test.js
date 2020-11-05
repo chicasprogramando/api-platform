@@ -44,7 +44,6 @@ describe("SKILL", () => {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
           expect(res.body.data).not.to.be.empty;
-
           done();
         });
     });
@@ -139,13 +138,9 @@ describe("SKILL", () => {
         .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
-
           expect(res.body.data).to.be.a("object");
-
           expect(res.body.data).to.have.property("description");
-
           expect(res.body.data.description).to.equal(description);
-
           done();
         });
     });
