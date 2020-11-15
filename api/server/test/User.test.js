@@ -4,7 +4,7 @@ const chaiHttp = require("chai-http");
 const { expect } = chai;
 
 const server = require("../../index");
-const { cleanDB, mochaAsync } = require("./utils/helpers");
+const { cleanDB } = require("./utils/helpers");
 const {
   ROUTES,
   MOCKS,
@@ -19,7 +19,7 @@ describe("USER", () => {
   let userCreatedByPOST = {};
   const token = `Bearer ${TEST_TOKEN}`;
 
-  before(() => mochaAsync(cleanDB));
+  before(() => cleanDB);
 
   /*
    * Test the /GET default
@@ -32,8 +32,8 @@ describe("USER", () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body.message).to.equals("Welcome to this API.");
-          done();
         });
+      done();
     });
   });
 
@@ -49,8 +49,8 @@ describe("USER", () => {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
           expect(res.body.data).to.have.lengthOf(0);
-          done();
         });
+      done();
     });
   });
 
@@ -79,9 +79,8 @@ describe("USER", () => {
           expect(res.body.data.ProfileId).to.equal(null);
 
           userCreatedByPOST = Object.assign({}, res.body.data);
-
-          done();
         });
+      done();
     });
   });
 
@@ -97,8 +96,8 @@ describe("USER", () => {
         .end((err, res) => {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
-          done();
         });
+      done();
     });
     it("should return user info and profile for given firebase_id", (done) => {
       chai
@@ -119,9 +118,8 @@ describe("USER", () => {
           expect(res.body.data.email).to.equal(MOCKS.USER.email);
           expect(res.body.data.accepted_terms).to.equal(false);
           expect(res.body.data.ProfileId).to.equal(null);
-
-          done();
         });
+      done();
     });
   });
 
@@ -136,8 +134,8 @@ describe("USER", () => {
         .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
-          done();
         });
+      done();
     });
     it("should return a specific user", (done) => {
       chai
@@ -154,8 +152,8 @@ describe("USER", () => {
           expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
           expect(res.body.data.firebase_id).to.equal(MOCKS.USER.firebase_id);
           expect(res.body.data.email).to.equal(MOCKS.USER.email);
-          done();
         });
+      done();
     });
   });
   /*
@@ -171,8 +169,8 @@ describe("USER", () => {
         .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
-          done();
         });
+      done();
     });
     it("should return the user updated", (done) => {
       chai
@@ -190,9 +188,8 @@ describe("USER", () => {
 
           expect(res.body.data.user_name).to.equal("janedoe");
           expect(res.body.data.email).to.equal("janedoe@gmail.com");
-
-          done();
         });
+      done();
     });
   });
   /*
@@ -207,8 +204,8 @@ describe("USER", () => {
         .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
-          done();
         });
+      done();
     });
     it("should delete the user created by POST", (done) => {
       chai
@@ -217,8 +214,8 @@ describe("USER", () => {
         .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
-          done();
         });
+      done();
     });
   });
 });
