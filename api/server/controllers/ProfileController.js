@@ -5,7 +5,13 @@ const utils = new Util();
 
 class ProfileController {
   static async addProfile(req, res) {
-    if (req.body.linkedin || req.body.github || req.body.twitter) {
+    // LELE TODO: validate that profile does not exist
+    if (
+      req.body.linkedin ||
+      req.body.github ||
+      req.body.twitter ||
+      req.body.UserId
+    ) {
       const newProfile = req.body;
       try {
         const createdProfile = await ProfileService.addProfile(newProfile);
@@ -15,12 +21,14 @@ class ProfileController {
         });
 
         if (req.body.specialties) {
-          const specialties = req.body.specialties;
-          specialties.map(async (s) => await createdProfile.addSpecialty(s.id));
+          Promise.all(
+            req.body.specialties.map((s) => {
+              return createdProfile.addSpecialty(s);
+            })
+          );
         }
         if (req.body.skills) {
-          const skills = req.body.skills;
-          skills.map(async (s) => await createdProfile.addSkill(s.id));
+          Promise.all(req.body.skills.map((s) => createdProfile.addSkill(s)));
         }
 
         utils.setSuccess(201, "Profile Created!", createdProfile);
@@ -101,7 +109,12 @@ class ProfileController {
           // 5) Add specialties and skills
           const { specialties, skills } = req.body;
           if (specialties) {
-            Promise.all(specialties.map((s) => createdProfile.addSpecialty(s)));
+            console.log("entra en especialties");
+            Promise.all(
+              specialties.map((s) => {
+                return createdProfile.addSpecialty(s);
+              })
+            );
           }
           if (skills) {
             Promise.all(skills.map((s) => createdProfile.addSkill(s)));
