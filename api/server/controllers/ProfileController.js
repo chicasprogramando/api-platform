@@ -109,7 +109,6 @@ class ProfileController {
           // 5) Add specialties and skills
           const { specialties, skills } = req.body;
           if (specialties) {
-            console.log("entra en especialties");
             Promise.all(
               specialties.map((s) => {
                 return createdProfile.addSpecialty(s);
