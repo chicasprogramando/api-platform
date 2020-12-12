@@ -19,6 +19,15 @@ const cleanDB = async () => {
   );
 };
 
+const mochaAsync = (fn) => {
+  return (done) => {
+    fn.call().then(done, (err) => {
+      done(err);
+    });
+  };
+};
+
 module.exports = {
   cleanDB,
+  mochaAsync,
 };
