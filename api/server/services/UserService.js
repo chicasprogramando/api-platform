@@ -1,4 +1,5 @@
 const database = require("../models");
+const profileAssociations = require("./utils");
 
 class UserService {
   static async getAllUsers() {
@@ -39,6 +40,7 @@ class UserService {
           {
             model: database.Profile,
             as: "profile",
+            include: profileAssociations,
           },
         ],
       });
@@ -55,6 +57,7 @@ class UserService {
           {
             model: database.Profile,
             as: "profile",
+            include: profileAssociations,
           },
         ],
       });
@@ -71,6 +74,7 @@ class UserService {
           {
             model: database.Profile,
             as: "profile",
+            include: profileAssociations,
           },
         ],
       });
