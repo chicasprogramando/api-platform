@@ -21,8 +21,8 @@ describe("USER", () => {
   // before(() => cleanDB());
 
   describe("\n ----- clear db -------------------------\n", () => {
-    it("should clear db", async () => {
-      await cleanDB()
+    it("should clear db",  (done) => {
+       cleanDB(done)
     });
   });
 
