@@ -15,7 +15,7 @@ const {
 chai.use(chaiHttp);
 
 describe("USER", () => {
-  let userCreatedByPOST = {};
+  // let userCreatedByPOST = {};
 
   before( () =>  cleanDB())
 
