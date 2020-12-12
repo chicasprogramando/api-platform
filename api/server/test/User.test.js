@@ -10,22 +10,20 @@ const {
   MOCKS,
   PROPS,
   FAKE_ID,
-  TEST_TOKEN,
 } = require("./utils/constants");
 
 chai.use(chaiHttp);
 
 describe("USER", () => {
   let userCreatedByPOST = {};
-  const token = `Bearer ${TEST_TOKEN}`;
 
-  before(() => cleanDB);
+  before(() => cleanDB())
 
   /*
    * Test the /GET default
    */
   describe("\n ----- GET / default msg -------------------------\n", () => {
-    it("should show welcome message", (done) => {
+    it("should show welcome message", () => {
       chai
         .request(server)
         .get("/")
@@ -33,7 +31,6 @@ describe("USER", () => {
           expect(res).to.have.status(200);
           expect(res.body.message).to.equals("Welcome to this API.");
         });
-      done();
     });
   });
 
@@ -152,7 +149,7 @@ describe("USER", () => {
           expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
           expect(res.body.data.firebase_id).to.equal(MOCKS.USER.firebase_id);
           expect(res.body.data.email).to.equal(MOCKS.USER.email);
-        });
+        })
       done();
     });
   });
@@ -205,7 +202,7 @@ describe("USER", () => {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
         });
-      done();
+        done();
     });
     it("should delete the user created by POST", (done) => {
       chai
