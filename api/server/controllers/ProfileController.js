@@ -98,27 +98,18 @@ class ProfileController {
             ProfileId: createdProfile.id,
           });
 
-          // Map specialties
-          if (req.body.specialties) {
-            const specialties = req.body.specialties;
-            await specialties.map(
-              async (s) => await createdProfile.addSpecialty(s.id)
-            );
+          // 5) Add specialties and skills
+          const { specialties, skills } = req.body;
+          if (specialties) {
+            Promise.all(specialties.map((s) => createdProfile.addSpecialty(s)));
           }
-          // Map Skills
-          if (req.body.skills) {
-            const skills = req.body.skills;
-            await skills.map(async (s) => await createdProfile.addSkill(s.id));
+          if (skills) {
+            Promise.all(skills.map((s) => createdProfile.addSkill(s)));
           }
         } else {
-          // Updates only profile data no associations
           await ProfileService.updateProfile(id, { ...req.body });
         }
 
-        // Change this time out for a sequelie transaction or something like that
-        // Skills and specialties don't finish inserting and result has skills and specialties empty
-        // With the timeout we ""fix"" it
-        await new Promise((r) => setTimeout(r, 3000));
         const updatedProfile = await ProfileService.getProfile(id);
         utils.setSuccess(200, "Profile updated", updatedProfile);
       }
