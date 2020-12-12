@@ -17,13 +17,13 @@ chai.use(chaiHttp);
 describe("USER", () => {
   // let userCreatedByPOST = {};
 
-  before( () =>  cleanDB())
+  before( async () =>  await cleanDB())
 
   /*
    * Test the /GET default
    */
   describe("\n ----- GET / default msg -------------------------\n", () => {
-    it("should show welcome message", () => {
+    it("should show welcome message", (done) => {
       chai
         .request(server)
         .get("/")
@@ -31,6 +31,7 @@ describe("USER", () => {
           expect(res).to.have.status(200);
           expect(res.body.message).to.equals("Welcome to this API.");
         });
+      done()
     });
   });
 
@@ -46,8 +47,8 @@ describe("USER", () => {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
           expect(res.body.data).to.have.lengthOf(0);
-          done();
         })
+      done();
     });
   });
 
