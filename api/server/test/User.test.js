@@ -21,8 +21,11 @@ describe("USER", () => {
   // before(() => cleanDB());
 
   describe("\n ----- clear db -------------------------\n", () => {
-    it("should show welcome message", async () => {
-      return await cleanDB()
+    it("should show welcome message", async (done) => {
+      await cleanDB()
+      const testArr = []
+      testArr.should.have.length(0);
+      done()
     });
   });
 
