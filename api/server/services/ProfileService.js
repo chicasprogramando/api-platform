@@ -63,10 +63,9 @@ class ProfileService {
         where: { id: id },
       });
       if (profileToDelete) {
-        const deletedProfile = await database.Profile.destroy({
+        return await database.Profile.destroy({
           where: { id: id },
         });
-        return deletedProfile;
       }
       return null;
     } catch (error) {
@@ -77,18 +76,25 @@ class ProfileService {
   static async searchProfiles({ skills, specialties }) {
     try {
       /**
-       * We need to map specialties and skills because when we string interpolate 
+       * We need to map specialties and skills because when we string interpolate
        * to build the AND query the single quotes are lost.
-      */
-       const withSpecialties = specialties && `AND "SP"."description" = ANY(ARRAY[${specialties.map(x => "'" + x + "'")}])` 
-       const withSkills = skills && `AND "SK"."description" = ANY(ARRAY[${skills.map(x => "'" + x + "'")}])`
+       */
+      const withSpecialties =
+        specialties &&
+        `AND "SP"."description" = ANY(ARRAY[${specialties.map(
+          (x) => "'" + x + "'"
+        )}])`;
+      const withSkills =
+        skills &&
+        `AND "SK"."description" = ANY(ARRAY[${skills.map(
+          (x) => "'" + x + "'"
+        )}])`;
 
-
-       /**
-        * We run a raw query because sequelize can't handle this special query case
-        * We need all profiles that have certain specialties and certain skills given
-        */
-       const q =  `SELECT DISTINCT "PR".id
+      /**
+       * We run a raw query because sequelize can't handle this special query case
+       * We need all profiles that have certain specialties and certain skills given
+       */
+      const q = `SELECT DISTINCT "PR".id
        FROM  public."Profiles" AS "PR", 
              public."Skills" AS "SK",
              public."Profile_Skills" as "PSK",
@@ -98,14 +104,13 @@ class ProfileService {
        AND "SK".id = "PSK"."SkillId" 
        AND "PR".id = "PSP"."ProfileId"
        AND "SP".id = "PSP"."SpecialtyId" 
-       ${withSkills ? withSkills : '' }
-       ${withSpecialties ? withSpecialties : ''}
-       `
+       ${withSkills ? withSkills : ""}
+       ${withSpecialties ? withSpecialties : ""}
+       `;
 
       const [results, _] = await database.sequelize.query(q);
 
-      return results
-
+      return results;
     } catch (error) {
       throw error;
     }
