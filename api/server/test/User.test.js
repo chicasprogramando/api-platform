@@ -15,7 +15,7 @@ describe("USER", () => {
    * Test the /GET default
    */
   describe("\n ----- GET / default msg -------------------------\n", () => {
-    it("should show welcome message", () => {
+    it("should show welcome message", (done) => {
       chai
         .request(server)
         .get("/")

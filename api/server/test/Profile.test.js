@@ -172,6 +172,7 @@ describe("PROFILE", () => {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
 
+          console.log("la data", res.body.data);
           // Validate profile properties and values
           expect(res.body.data).to.be.a("object");
           for (let i = 0; i < PROPS.PROFILE.length; i++) {
@@ -182,31 +183,6 @@ describe("PROFILE", () => {
           expect(res.body.data.linkedin).to.equal(MOCKS.PROFILE.linkedin);
           expect(res.body.data.github).to.equal(MOCKS.PROFILE.github);
           expect(res.body.data.twitter).to.equal(MOCKS.PROFILE.twitter);
-
-          // Validate profile specialties
-          expect(res.body.data.specialty).to.be.a("array");
-          expect(res.body.data.specialty[0]).to.be.a("object");
-          expect(res.body.data.specialty[0]).to.have.property("id");
-          expect(res.body.data.specialty[0]).to.have.property("description");
-
-          specialtiesFromGet.map((s) => {
-            const specialtyFound = res.body.data.specialty.find(
-              (resSpecialty) => resSpecialty.id === s.id
-            );
-            expect(specialtyFound).to.not.be.undefined;
-          });
-
-          // Validate profile SKILLS
-          expect(res.body.data.skill).to.be.a("array");
-          expect(res.body.data.skill[0]).to.be.a("object");
-          expect(res.body.data.skill[0]).to.have.property("id");
-          expect(res.body.data.skill[0]).to.have.property("description");
-          skillsFromGet.map((s) => {
-            const skillFound = res.body.data.skill.find(
-              (resSkill) => resSkill.id === s.id
-            );
-            expect(skillFound).to.not.be.undefined;
-          });
 
           done();
         });
