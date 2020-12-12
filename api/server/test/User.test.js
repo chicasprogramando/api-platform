@@ -18,12 +18,8 @@ chai.use(chaiHttp);
 describe("USER", () => {
   let userCreatedByPOST = {};
 
-  // before(() => cleanDB());
-
-  describe("\n ----- clear db -------------------------\n", () => {
-    it("should clear db",  (done) => {
-       cleanDB(done)
-    });
+  before(async function() {
+    await cleanDB();
   });
 
   /*

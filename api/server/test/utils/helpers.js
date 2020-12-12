@@ -9,7 +9,7 @@ const models = require("../../models");
 */
 const specialTables = ["sequelize", "Sequelize", "Specialty", "Skill"];
 
-const cleanDB = async (done) => {
+const cleanDB = async () => {
    await Promise.all(
     Object.keys(models).map((key) => {
       // only destroy our tables data, not sequelize
@@ -17,7 +17,6 @@ const cleanDB = async (done) => {
       return models[key].destroy({ where: {}, force: true });
     })
   );
-   done()
 };
 
 module.exports = {
