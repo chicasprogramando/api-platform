@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 describe("SKILL", () => {
   let skillCreatedByPOST = {};
 
-  before( () => cleanDB());
+  before(async () => await cleanDB())
 
   /*
    * Test the /GET default

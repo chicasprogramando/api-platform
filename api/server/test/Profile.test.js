@@ -26,7 +26,7 @@ describe("PROFILE", () => {
 
   let token = `Bearer ${TEST_TOKEN}`;
 
-  before( () => cleanDB());
+  before(async () => await cleanDB())
 
   /*
    * Test the /GET default

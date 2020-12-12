@@ -17,7 +17,7 @@ chai.use(chaiHttp);
 describe("USER", () => {
   let userCreatedByPOST = {};
 
-  before(() => cleanDB())
+  before(async () => await cleanDB())
 
   /*
    * Test the /GET default

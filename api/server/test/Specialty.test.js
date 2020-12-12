@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 describe("SPECIALTY", () => {
   let specialtyCreatedByPOST = {};
 
-  before(() => cleanDB())
+  before(async () => await cleanDB())
 
   /*
    * Test the /GET default
