@@ -25,8 +25,8 @@ describe("SKILL", () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body.message).to.equals("Welcome to this API.");
+          done();
         });
-        done();
     });
   });
 
@@ -42,8 +42,8 @@ describe("SKILL", () => {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
           expect(res.body.data).not.to.be.empty;
+          done();
         });
-        done();
       });
   });
 
@@ -69,8 +69,8 @@ describe("SKILL", () => {
           expect(res.body.data.description).to.equal(description);
 
           skillCreatedByPOST = Object.assign({}, res.body.data);
+          done();
         });
-        done();
     });
   });
 
@@ -85,8 +85,8 @@ describe("SKILL", () => {
         .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
+          done();
         });
-      done();
     });
     it("should return a specific skill", (done) => {
       chai
@@ -105,8 +105,8 @@ describe("SKILL", () => {
           expect(res.body.data.description).to.equal(
             skillCreatedByPOST.description
           );
+          done();
         });
-      done();
     });
   });
   /*
@@ -122,8 +122,8 @@ describe("SKILL", () => {
         .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
+          done();
         });
-      done();
     });
     it("should return the skill updated", (done) => {
       const description = "Skill Updated";
@@ -141,8 +141,8 @@ describe("SKILL", () => {
 
           expect(res.body.data.description).to.equal(description);
 
+          done();
         });
-      done();
     });
   });
   /*
@@ -157,8 +157,8 @@ describe("SKILL", () => {
         .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
+          done();
         });
-      done();
     });
     it("should delete the skill created by POST", (done) => {
       chai
@@ -167,8 +167,8 @@ describe("SKILL", () => {
         .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
+          done();
         });
-      done();
     });
   });
 });

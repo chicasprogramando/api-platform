@@ -25,8 +25,8 @@ describe("SPECIALTY", () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body.message).to.equals("Welcome to this API.");
+          done();
         });
-        done();
     });
   });
 
@@ -42,8 +42,8 @@ describe("SPECIALTY", () => {
           expect(res).to.have.status(200);
           expect(res.body.data).to.be.a("array");
           expect(res.body.data).not.to.be.empty;
+          done();
         });
-      done();
     });
   });
 
@@ -70,8 +70,8 @@ describe("SPECIALTY", () => {
 
           specialtyCreatedByPOST = Object.assign({}, res.body.data);
 
+          done();
         });
-      done();
     });
   });
 
@@ -86,8 +86,8 @@ describe("SPECIALTY", () => {
         .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
+          done();
         });
-      done();
     });
     it("should return a specific specialty", (done) => {
       chai
@@ -106,8 +106,8 @@ describe("SPECIALTY", () => {
           expect(res.body.data.description).to.equal(
             specialtyCreatedByPOST.description
           );
+          done();
         });
-      done();
     });
   });
   /*
@@ -123,8 +123,8 @@ describe("SPECIALTY", () => {
         .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
+          done();
         });
-        done();
     });
     it("should return the specialty updated", (done) => {
       const description = "Specialty Updated";
@@ -142,8 +142,8 @@ describe("SPECIALTY", () => {
 
           expect(res.body.data.description).to.equal(description);
 
+          done();
         });
-        done();
     });
   });
   /*
@@ -158,8 +158,8 @@ describe("SPECIALTY", () => {
         .end(function (err, res) {
           expect(res).to.have.status(404);
           expect(res.body.status).to.equal("error");
+          done();
         });
-        done();
     });
     it("should delete the specialty created by POST", (done) => {
       chai
@@ -168,8 +168,8 @@ describe("SPECIALTY", () => {
         .end(function (err, res) {
           expect(res).to.have.status(200);
           expect(res.body.status).to.equal("success");
+          done();
         });
-        done();
     });
   });
 });
