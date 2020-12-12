@@ -4,7 +4,6 @@ const chaiHttp = require("chai-http");
 const { expect } = chai;
 
 const server = require("../../index");
-const { cleanDB } = require("./utils/helpers");
 const {
   ROUTES,
   MOCKS,
@@ -21,8 +20,6 @@ describe("PROFILE", () => {
   let newUser = {};
 
   let token = `Bearer ${TEST_TOKEN}`;
-
-  before(async () => await cleanDB());
 
   /*
    * Test the /GET default
@@ -290,6 +287,17 @@ describe("PROFILE", () => {
       chai
         .request(server)
         .delete(`${ROUTES.profileRoute}/${profileReturnedByPOST.id}`)
+        .set("Authorization", token)
+        .end(function (err, res) {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.equal("success");
+          done();
+        });
+    });
+    it("should delete the user created to test profiles", (done) => {
+      chai
+        .request(server)
+        .delete(`${ROUTES.userRoute}/${newUser.id}`)
         .set("Authorization", token)
         .end(function (err, res) {
           expect(res).to.have.status(200);

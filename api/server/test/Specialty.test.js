@@ -4,15 +4,12 @@ const chaiHttp = require("chai-http");
 const { expect } = chai;
 
 const server = require("../../index");
-const { cleanDB } = require("./utils/helpers");
 const { ROUTES, PROPS, FAKE_ID } = require("./utils/constants");
 
 chai.use(chaiHttp);
 
 describe("SPECIALTY", () => {
   let specialtyCreatedByPOST = {};
-
-  before(async () => await cleanDB());
 
   /*
    * Test the /GET default

@@ -4,15 +4,12 @@ const chaiHttp = require("chai-http");
 const { expect } = chai;
 
 const server = require("../../index");
-const { cleanDB } = require("./utils/helpers");
 const { ROUTES, MOCKS, PROPS, FAKE_ID } = require("./utils/constants");
 
 chai.use(chaiHttp);
 
 describe("USER", () => {
   let userCreatedByPOST = {};
-
-  before(async () => await cleanDB());
 
   /*
    * Test the /GET default
@@ -25,25 +22,8 @@ describe("USER", () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body.message).to.equals("Welcome to this API.");
+          done();
         });
-      done();
-    });
-  });
-
-  /*
-   * Test the /GET all users
-   */
-  describe("\n ----- GET /user ------------------------------\n", () => {
-    it("should return an empty array", (done) => {
-      chai
-        .request(server)
-        .get(ROUTES.userRoute)
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          expect(res.body.data).to.be.a("array");
-          expect(res.body.data).to.have.lengthOf(0);
-        });
-      done();
     });
   });
 
@@ -57,9 +37,11 @@ describe("USER", () => {
         .post(ROUTES.userRoute)
         .send({ ...MOCKS.USER })
         .end((err, res) => {
+          console.log("err", err);
           expect(res).to.have.status(201);
           expect(res.body.status).to.equal("success");
 
+          console.log("esto es el user creado ====", res.body);
           expect(res.body.data).to.be.a("object");
           for (let i = 0; i < PROPS.USER.length; i++) {
             expect(res.body.data).to.have.property(PROPS.USER[i]);
@@ -72,8 +54,9 @@ describe("USER", () => {
           expect(res.body.data.ProfileId).to.equal(null);
 
           userCreatedByPOST = Object.assign({}, res.body.data);
+
+          done();
         });
-      done();
     });
   });
 
