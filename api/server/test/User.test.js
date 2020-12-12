@@ -51,168 +51,168 @@ describe("USER", () => {
     });
   });
 
-  /*
-   * Test the /POST user
-   */
-  describe("\n ----- POST /user ------------------------------\n", () => {
-    it("should create a new user in the DB", (done) => {
-      chai
-        .request(server)
-        .post(ROUTES.userRoute)
-        .send({ ...MOCKS.USER })
-        .end((err, res) => {
-          expect(res).to.have.status(201);
-          expect(res.body.status).to.equal("success");
+  // /*
+  //  * Test the /POST user
+  //  */
+  // describe("\n ----- POST /user ------------------------------\n", () => {
+  //   it("should create a new user in the DB", (done) => {
+  //     chai
+  //       .request(server)
+  //       .post(ROUTES.userRoute)
+  //       .send({ ...MOCKS.USER })
+  //       .end((err, res) => {
+  //         expect(res).to.have.status(201);
+  //         expect(res.body.status).to.equal("success");
 
-          expect(res.body.data).to.be.a("object");
-          for (let i = 0; i < PROPS.USER.length; i++) {
-            expect(res.body.data).to.have.property(PROPS.USER[i]);
-          }
+  //         expect(res.body.data).to.be.a("object");
+  //         for (let i = 0; i < PROPS.USER.length; i++) {
+  //           expect(res.body.data).to.have.property(PROPS.USER[i]);
+  //         }
 
-          expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
-          expect(res.body.data.firebase_id).to.equal(MOCKS.USER.firebase_id);
-          expect(res.body.data.email).to.equal(MOCKS.USER.email);
-          expect(res.body.data.accepted_terms).to.equal(false);
-          expect(res.body.data.ProfileId).to.equal(null);
+  //         expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
+  //         expect(res.body.data.firebase_id).to.equal(MOCKS.USER.firebase_id);
+  //         expect(res.body.data.email).to.equal(MOCKS.USER.email);
+  //         expect(res.body.data.accepted_terms).to.equal(false);
+  //         expect(res.body.data.ProfileId).to.equal(null);
 
-          userCreatedByPOST = Object.assign({}, res.body.data);
-          done();
-        });
-    });
-  });
+  //         userCreatedByPOST = Object.assign({}, res.body.data);
+  //         done();
+  //       });
+  //   });
+  // });
 
-  /*
-   * Test the /POST user/login
-   */
-  describe("\n ----- POST /user/login ------------------------------\n", () => {
-    it("should return user not found 404", (done) => {
-      chai
-        .request(server)
-        .post(`${ROUTES.userRoute}/login`)
-        .send({ firebase_id: "9999XXXX999999" })
-        .end((err, res) => {
-          expect(res).to.have.status(404);
-          expect(res.body.status).to.equal("error");
-          done();
-        });
-    });
-    it("should return user info and profile for given firebase_id", (done) => {
-      chai
-        .request(server)
-        .post(`${ROUTES.userRoute}/login`)
-        .send({ firebase_id: MOCKS.USER.firebase_id })
-        .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body.status).to.equal("success");
+  // /*
+  //  * Test the /POST user/login
+  //  */
+  // describe("\n ----- POST /user/login ------------------------------\n", () => {
+  //   it("should return user not found 404", (done) => {
+  //     chai
+  //       .request(server)
+  //       .post(`${ROUTES.userRoute}/login`)
+  //       .send({ firebase_id: "9999XXXX999999" })
+  //       .end((err, res) => {
+  //         expect(res).to.have.status(404);
+  //         expect(res.body.status).to.equal("error");
+  //         done();
+  //       });
+  //   });
+  //   it("should return user info and profile for given firebase_id", (done) => {
+  //     chai
+  //       .request(server)
+  //       .post(`${ROUTES.userRoute}/login`)
+  //       .send({ firebase_id: MOCKS.USER.firebase_id })
+  //       .end((err, res) => {
+  //         expect(res).to.have.status(200);
+  //         expect(res.body.status).to.equal("success");
 
-          expect(res.body.data).to.be.a("object");
-          for (let i = 0; i < PROPS.USER.length; i++) {
-            expect(res.body.data).to.have.property(PROPS.USER[i]);
-          }
+  //         expect(res.body.data).to.be.a("object");
+  //         for (let i = 0; i < PROPS.USER.length; i++) {
+  //           expect(res.body.data).to.have.property(PROPS.USER[i]);
+  //         }
 
-          expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
-          expect(res.body.data.firebase_id).to.equal(MOCKS.USER.firebase_id);
-          expect(res.body.data.email).to.equal(MOCKS.USER.email);
-          expect(res.body.data.accepted_terms).to.equal(false);
-          expect(res.body.data.ProfileId).to.equal(null);
-          done();
-        });
-    });
-  });
+  //         expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
+  //         expect(res.body.data.firebase_id).to.equal(MOCKS.USER.firebase_id);
+  //         expect(res.body.data.email).to.equal(MOCKS.USER.email);
+  //         expect(res.body.data.accepted_terms).to.equal(false);
+  //         expect(res.body.data.ProfileId).to.equal(null);
+  //         done();
+  //       });
+  //   });
+  // });
 
-  /*
-   * Test the /GET specific user
-   */
-  describe("\n----- GET /user/:id ------------------------------\n", () => {
-    it("should return 404 because user doesn't exist", (done) => {
-      chai
-        .request(server)
-        .get(`${ROUTES.userRoute}/${FAKE_ID.USER}`)
-        .end(function (err, res) {
-          expect(res).to.have.status(404);
-          expect(res.body.status).to.equal("error");
-          done();
-        });
-    });
-    it("should return a specific user", (done) => {
-      chai
-        .request(server)
-        .get(`${ROUTES.userRoute}/${userCreatedByPOST.id}`)
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          expect(res.body.status).to.equal("success");
+  // /*
+  //  * Test the /GET specific user
+  //  */
+  // describe("\n----- GET /user/:id ------------------------------\n", () => {
+  //   it("should return 404 because user doesn't exist", (done) => {
+  //     chai
+  //       .request(server)
+  //       .get(`${ROUTES.userRoute}/${FAKE_ID.USER}`)
+  //       .end(function (err, res) {
+  //         expect(res).to.have.status(404);
+  //         expect(res.body.status).to.equal("error");
+  //         done();
+  //       });
+  //   });
+  //   it("should return a specific user", (done) => {
+  //     chai
+  //       .request(server)
+  //       .get(`${ROUTES.userRoute}/${userCreatedByPOST.id}`)
+  //       .end(function (err, res) {
+  //         expect(res).to.have.status(200);
+  //         expect(res.body.status).to.equal("success");
 
-          expect(res.body.data).to.be.a("object");
-          for (let i = 0; i < PROPS.USER.length; i++) {
-            expect(res.body.data).to.have.property(PROPS.USER[i]);
-          }
-          expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
-          expect(res.body.data.firebase_id).to.equal(MOCKS.USER.firebase_id);
-          expect(res.body.data.email).to.equal(MOCKS.USER.email);
-          done();
-        })
-    });
-  });
-  /*
-   * Test the /PUT user
-   * Will update the user created by POST above
-   */
-  describe("\n----- PUT /user/:id ------------------------------\n", () => {
-    it("should return 404 because user doesn't exist", (done) => {
-      chai
-        .request(server)
-        .put(`${ROUTES.userRoute}/${FAKE_ID.USER}`)
-        .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
-        .end(function (err, res) {
-          expect(res).to.have.status(404);
-          expect(res.body.status).to.equal("error");
-          done();
-        });
-    });
-    it("should return the user updated", (done) => {
-      chai
-        .request(server)
-        .put(`${ROUTES.userRoute}/${userCreatedByPOST.id}`)
-        .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          expect(res.body.status).to.equal("success");
+  //         expect(res.body.data).to.be.a("object");
+  //         for (let i = 0; i < PROPS.USER.length; i++) {
+  //           expect(res.body.data).to.have.property(PROPS.USER[i]);
+  //         }
+  //         expect(res.body.data.user_name).to.equal(MOCKS.USER.user_name);
+  //         expect(res.body.data.firebase_id).to.equal(MOCKS.USER.firebase_id);
+  //         expect(res.body.data.email).to.equal(MOCKS.USER.email);
+  //         done();
+  //       })
+  //   });
+  // });
+  // /*
+  //  * Test the /PUT user
+  //  * Will update the user created by POST above
+  //  */
+  // describe("\n----- PUT /user/:id ------------------------------\n", () => {
+  //   it("should return 404 because user doesn't exist", (done) => {
+  //     chai
+  //       .request(server)
+  //       .put(`${ROUTES.userRoute}/${FAKE_ID.USER}`)
+  //       .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
+  //       .end(function (err, res) {
+  //         expect(res).to.have.status(404);
+  //         expect(res.body.status).to.equal("error");
+  //         done();
+  //       });
+  //   });
+  //   it("should return the user updated", (done) => {
+  //     chai
+  //       .request(server)
+  //       .put(`${ROUTES.userRoute}/${userCreatedByPOST.id}`)
+  //       .send({ user_name: "janedoe", email: "janedoe@gmail.com" })
+  //       .end(function (err, res) {
+  //         expect(res).to.have.status(200);
+  //         expect(res.body.status).to.equal("success");
 
-          expect(res.body.data).to.be.a("object");
+  //         expect(res.body.data).to.be.a("object");
 
-          expect(res.body.data).to.have.property("user_name");
-          expect(res.body.data).to.have.property("email");
+  //         expect(res.body.data).to.have.property("user_name");
+  //         expect(res.body.data).to.have.property("email");
 
-          expect(res.body.data.user_name).to.equal("janedoe");
-          expect(res.body.data.email).to.equal("janedoe@gmail.com");
-          done();
-        });
-    });
-  });
-  /*
-   * Test the /DELETE user
-   * Will delete the user created by POST above
-   */
-  describe("\n----- DELETE /user/:id ------------------------------\n", () => {
-    it("should return 404 because user doesn't exist", (done) => {
-      chai
-        .request(server)
-        .delete(`${ROUTES.userRoute}/${FAKE_ID.USER}`)
-        .end(function (err, res) {
-          expect(res).to.have.status(404);
-          expect(res.body.status).to.equal("error");
-          done();
-        });
-    });
-    it("should delete the user created by POST", (done) => {
-      chai
-        .request(server)
-        .delete(`${ROUTES.userRoute}/${userCreatedByPOST.id}`)
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          expect(res.body.status).to.equal("success");
-          done();
-        });
-    });
-  });
+  //         expect(res.body.data.user_name).to.equal("janedoe");
+  //         expect(res.body.data.email).to.equal("janedoe@gmail.com");
+  //         done();
+  //       });
+  //   });
+  // });
+  // /*
+  //  * Test the /DELETE user
+  //  * Will delete the user created by POST above
+  //  */
+  // describe("\n----- DELETE /user/:id ------------------------------\n", () => {
+  //   it("should return 404 because user doesn't exist", (done) => {
+  //     chai
+  //       .request(server)
+  //       .delete(`${ROUTES.userRoute}/${FAKE_ID.USER}`)
+  //       .end(function (err, res) {
+  //         expect(res).to.have.status(404);
+  //         expect(res.body.status).to.equal("error");
+  //         done();
+  //       });
+  //   });
+  //   it("should delete the user created by POST", (done) => {
+  //     chai
+  //       .request(server)
+  //       .delete(`${ROUTES.userRoute}/${userCreatedByPOST.id}`)
+  //       .end(function (err, res) {
+  //         expect(res).to.have.status(200);
+  //         expect(res.body.status).to.equal("success");
+  //         done();
+  //       });
+  //   });
+  // });
 });
